@@ -432,3 +432,49 @@ function tema($order = null)
         return $q[$order];
     }
 }
+
+function no_nota($tgl)
+{
+    $db = db('penjualan');
+    $q = $db->orderBy('tgl', 'DESC')->get()->getRowArray();
+
+
+    $nota = date('dmY', $tgl) . '-0001';
+
+    if ($q) {
+        if (date('m', $tgl) == date("m", $q['tgl']) && date('Y', $tgl) == date("Y", $q['tgl'])) {
+            $last_nota = explode("-", $q['no_nota']);
+            $new_nota = (int)end($last_nota) + 1;
+
+            $temp_nota = '';
+            if (strlen($new_nota) == 1) {
+                $temp_nota = '000' . $new_nota;
+            } elseif (strlen($new_nota) == 2) {
+                $temp_nota = '00' . $new_nota;
+            } elseif (strlen($new_nota) == 3) {
+                $temp_nota = '0' . $new_nota;
+            } else {
+                $temp_nota = $new_nota;
+            }
+
+            $nota = date('dmY', $tgl) . '-' . $temp_nota;
+        }
+    }
+
+    return $nota;
+}
+
+function get_tahun()
+{
+    $db = db('pengeluaran');
+    $q = $db->orderBy('tgl', 'DESC')->get()->getResultArray();
+    $tahuns = [];
+
+    foreach ($q as $i) {
+        if (!in_array(date('Y', $i['tgl']), $tahuns)) {
+            $tahuns[] = date('Y', $i['tgl']);
+        }
+    }
+
+    return $tahuns;
+}

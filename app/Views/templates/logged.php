@@ -48,6 +48,23 @@
             background-color: <?= $tema['link_secondary_hover']; ?>;
             color: <?= $tema['link_secondary']; ?>;
         }
+
+        .data_list {
+            position: absolute;
+            top: 100%;
+            width: 100%;
+            left: 0;
+            z-index: 99999;
+            background-color: <?= $tema['link_main']; ?>;
+            color: <?= $tema['text_main']; ?>;
+
+        }
+
+        .data_list div {
+            padding: 5px 10px;
+            border-bottom: 1px solid <?= $tema['text_main']; ?>;
+            cursor: pointer;
+        }
     </style>
     <script>
         const message = (status = "200", message) => {
@@ -61,13 +78,14 @@
             }, 1000);
 
         }
+
         const tes = '';
     </script>
 
 
 </head>
 
-<body class="bg_main text_main">
+<body class="bg_main text_main" style="padding-bottom: 80px;">
     <?= view('templates/navbar'); ?>
     <div id="modal_fullscreen"></div>
     <!-- Modal -->
@@ -118,7 +136,7 @@
     </div>
     <div class="fixed-bottom message" style="margin-bottom: 90px;z-index:999999"></div>
 
-    <nav class="fixed-bottom border-top border-secondary">
+    <nav class="fixed-bottom border-top border_secondary bg_main">
         <div class="m-auto text-center p-3">
             <a target="_blank" href="https://www.instagram.com/djanasragen/">
                 <svg width="98" height="17" viewBox="0 0 98 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -164,7 +182,7 @@
                 if (res.status == "200") {
                     setInterval(() => {
                         location.reload();
-                    }, 500);
+                    }, 1200);
                 }
             })
 
@@ -285,6 +303,7 @@
         // Membuat instance dari kelas Modal
         const popup = new Modal();
         const popup_confirm = new Modal("confirm");
+        const popupButton = new Modal("button");
 
         // Menampilkan pesan sukses dan memanggil metode execute
         // popup.confirm("myElement");
@@ -317,6 +336,71 @@
 
             return result;
         }
+
+        function angka(a, prefix) {
+            let angka = a.toString();
+            let number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
+
+
+        const str_replace = (search, replace, subject) => {
+            return subject.split(search).join(replace);
+        }
+
+        $(document).on('keyup', '.angka', function(e) {
+            e.preventDefault();
+            let val = $(this).val();
+
+            $(this).val(angka(val));
+        });
+
+        // untuk format rupiah dalam td
+        $(document).on('keyup', '.angka_text', function(e) {
+            e.preventDefault();
+            let value = $(this).text();
+
+            // Hapus format lama (non-angka)
+            value = value.replace(/[^0-9]/g, '');
+
+            // Format angka tanpa "Rp"
+            let formatted = new Intl.NumberFormat('id-ID', {
+                minimumFractionDigits: 0
+            }).format(value || 0);
+
+            // Masukkan kembali angka ke dalam <td>
+            $(this).text(formatted);
+
+            // Memastikan kursor tetap berada di posisi terakhir
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(this);
+            range.collapse(false);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        });
+
+        const time_php_to_js = (date) => {
+            let d = new Date(date * 1000);
+            let month = (d.getMonth() + 1).toString().padStart(2, '0'); // Bulan dimulai dari 0, sehingga harus ditambah 1
+            let day = d.getDate().toString().padStart(2, '0');
+            let year = d.getFullYear();
+
+            let res = `${day}/${month}/${year}`;
+            return res;
+        }
+
 
         <?php if (session()->getFlashdata('gagal')) : ?>
             let msg = "<?= session()->getFlashdata('gagal'); ?>";

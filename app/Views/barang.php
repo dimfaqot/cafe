@@ -17,21 +17,33 @@
                     <form action="<?= base_url(menu()['controller']); ?>/add" method="post">
 
                         <div class="mb-3">
-                            <label style="font-size: 12px;">Nama</label>
-                            <input placeholder="Nama" type="text" name="nama" class="form-control form-control-sm" required>
-                        </div>
-                        <div class="mb-3">
-                            <label style="font-size: 12px;">Hp</label>
-                            <input placeholder="Hp" type="text" name="hp" class="form-control form-control-sm" required>
+                            <label style="font-size: 12px;">Barang</label>
+                            <input placeholder="Barang" type="text" name="barang" class="form-control form-control-sm" required>
                         </div>
 
                         <div class="mb-3">
-                            <label style="font-size: 12px;">Role</label>
-                            <select class="form-select form-select-sm mb-3" name="role">
-                                <?php foreach (options('role') as $i): ?>
-                                    <option <?= ($i['value'] == 'Member' ? 'selected' : ''); ?> value="<?= $i['value']; ?>"><?= $i['value']; ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                            <label style="font-size: 12px;">Qty</label>
+                            <input placeholder="Qty" type="text" name="qty" class="form-control form-control-sm angka" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label style="font-size: 12px;">Harga</label>
+                            <input placeholder="Harga" type="text" name="harga" class="form-control form-control-sm angka" required>
+                        </div>
+
+                        <div class="mb-3 text-center">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="kategori" type="radio" value="Barang" checked>
+                                <label class="form-check-label">Barang</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="kategori" type="radio" value="Inv">
+                                <label class="form-check-label">Inv</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="kategori" type="radio" value="Donasi">
+                                <label class="form-check-label">Donasi</label>
+                            </div>
                         </div>
 
                         <div class="d-grid">
@@ -56,21 +68,19 @@
         <thead>
             <tr>
                 <th class="text-center">#</th>
-                <th class="text-center">Nama</th>
-                <th class="text-center">Role</th>
-                <th class="text-center">Hp</th>
-                <th class="text-center">Link</th>
+                <th class="text-center">Barang</th>
+                <th class="text-center">Qty</th>
+                <th class="text-center">Harga</th>
                 <th class="text-center">Act</th>
             </tr>
         </thead>
         <tbody class="tabel_search">
             <?php foreach ($data as $k => $i): ?>
                 <tr>
-                    <th><?= $k + 1; ?></th>
-                    <td><?= $i['nama']; ?></td>
-                    <td><?= $i['role']; ?></td>
-                    <td><?= $i['hp']; ?></td>
-                    <td class="text-center"><a role="button" class="copy_text link_main rounded py-1 px-2" data-text="<?= $i['link']; ?>" href=""><i class="fa-solid fa-link"></i> Link</a></td>
+                    <td><?= $k + 1; ?></td>
+                    <td><?= $i['barang']; ?></td>
+                    <td class="text-end"><?= angka($i['qty']); ?></td>
+                    <td class="text-end"><?= angka($i['harga']); ?></td>
                     <td class="text-center"><a href="" role="button" class="text-danger fs-6 btn_confirm btn_confirm_<?= $i['id']; ?>" data-tabel="<?= menu()['tabel']; ?>" data-id="<?= $i['id']; ?>"><i class="fa-solid fa-trash-can"></i></a> <a role="button" class="text-warning fs-6 btn_update" data-id="<?= $i['id']; ?>" href=""><i class="fa-solid fa-square-pen"></i></a></td>
                 </tr>
             <?php endforeach; ?>
@@ -104,27 +114,34 @@
                         <form action="<?= base_url(menu()['controller']); ?>/update" method="post">
                         <input type="hidden" name="id" value="${val.id}">
 
-                          <div class="mb-3">
-                            <label style="font-size: 12px;">Nama</label>
-                            <input placeholder="Nama" type="text" name="nama" value="${val.nama}" class="form-control form-control-sm" required>
-                        </div>
-                          <div class="mb-3">
-                            <label style="font-size: 12px;">Hp</label>
-                            <input placeholder="Hp" type="text" name="hp" value="${val.hp}" class="form-control form-control-sm" required>
-                        </div>
-
                         <div class="mb-3">
-                            <label style="font-size: 12px;">Role</label>
-                            <select class="form-select form-select-sm mb-3" name="role">`;
-
-        options.forEach(o => {
-            html += `<option ${(o.value==val.role?'selected':'')} value="${o.value}">${o.value}</option>`
-        });
-
-
-        html += `</select>
+                            <label style="font-size: 12px;">Barang</label>
+                            <input placeholder="Barang" type="text" name="barang" value="${val.barang}" class="form-control form-control-sm" required>
                         </div>
-
+                        
+                        <div class="mb-3">
+                            <label style="font-size: 12px;">Qty</label>
+                            <input placeholder="Qty" type="text" name="qty" value="${angka(val.qty)}" class="form-control form-control-sm angka" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label style="font-size: 12px;">Harga</label>
+                            <input placeholder="Harga" type="text" name="harga" value="${angka(val.harga)}" class="form-control form-control-sm angka" required>
+                        </div>
+                        <div class="mb-3 text-center">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="kategori" type="radio" value="Barang" ${(val.kategori=="Barang"?"checked":"")}>
+                                <label class="form-check-label">Barang</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="kategori" type="radio" value="Inv" ${(val.kategori=="Inv"?"checked":"")}>
+                                <label class="form-check-label">Inv</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="kategori" type="radio" value="Donasi" ${(val.kategori=="Donasi"?"checked":"")}>
+                                <label class="form-check-label">Donasi</label>
+                            </div>
+                        </div>
                         <div class="d-grid">
                             <button class="btn btn-sm link_secondary"><i class="fa-solid fa-square-pen"></i> Update</button>
                         </div>

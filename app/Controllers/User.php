@@ -33,14 +33,19 @@ class User extends BaseController
     {
         $nama = clear(upper_first($this->request->getVar('nama')));
         $role = clear(upper_first($this->request->getVar('role')));
+        $hp = clear(upper_first($this->request->getVar('hp')));
 
         $db = db(menu()['tabel']);
         if ($db->where('nama', $nama)->where('role', $role)->get()->getRowArray()) {
-            gagal(base_url(menu()['controller']), "Data sudah ada!.");
+            gagal(base_url(menu()['controller']), "Nama sudah ada!.");
+        }
+        if ($db->where('hp', $hp)->where('role', $role)->get()->getRowArray()) {
+            gagal(base_url(menu()['controller']), "Nama sudah ada!.");
         }
 
         $data = [
             'nama' => $nama,
+            'hp' => $hp,
             'role' => $role
         ];
 
@@ -55,6 +60,7 @@ class User extends BaseController
         $id = clear($this->request->getVar('id'));
         $nama = clear(upper_first($this->request->getVar('nama')));
         $role = clear(upper_first($this->request->getVar('role')));
+        $hp = clear(upper_first($this->request->getVar('hp')));
 
         $db = db(menu()['tabel']);
         $q = $db->where('id', $id)->get()->getRowArray();
@@ -64,12 +70,16 @@ class User extends BaseController
         }
 
         if ($db->whereNotIn('id', [$id])->where('nama', $nama)->where('role', $role)->get()->getRowArray()) {
-            gagal(base_url(menu()['controller']), "Data sudah ada!.");
+            gagal(base_url(menu()['controller']), "Nama sudah ada!.");
+        }
+        if ($db->whereNotIn('id', [$id])->where('hp', $hp)->where('role', $role)->get()->getRowArray()) {
+            gagal(base_url(menu()['controller']), "Hp sudah ada!.");
         }
 
 
         $q['nama'] = $nama;
         $q['role'] = $role;
+        $q['hp'] = $hp;
 
         $db->where('id', $id);
         if ($db->update($q)) {

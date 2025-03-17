@@ -29,3 +29,28 @@ $routes->post('/options/update', 'Options::update');
 $routes->get('/user', 'User::index');
 $routes->post('/user/add', 'User::add');
 $routes->post('/user/update', 'User::update');
+
+// options
+$routes->get('/barang', 'Barang::index');
+$routes->post('/barang/add', 'Barang::add');
+$routes->post('/barang/update', 'Barang::update');
+
+// penjualan
+$routes->get('/penjualan', 'Penjualan::index');
+$routes->post('/penjualan/no_nota', 'Penjualan::no_nota');
+$routes->post('/penjualan/cari_barang', 'Penjualan::cari_barang');
+$routes->post('/penjualan/transaksi', 'Penjualan::transaksi');
+$routes->post('/penjualan/user', 'Penjualan::user');
+
+// pengeluaran
+$routes->get('/pengeluaran', 'Pengeluaran::index');
+$routes->get('/inventaris', 'Pengeluaran::inventaris');
+$routes->post('/inventaris/add', 'Pengeluaran::add');
+$routes->post('/inventaris/update', 'Pengeluaran::update');
+$routes->post('/pengeluaran/cari_barang', 'Pengeluaran::cari_barang');
+$routes->post('/pengeluaran/transaksi', 'Pengeluaran::transaksi');
+$routes->post('/pengeluaran/user', 'Pengeluaran::user');
+
+// guest
+$routes->get('guest/laporan/(:any)/(:num)', 'Guest::laporan/$1/$2');
+$routes->get('/guest/cetak_nota/(:any)', 'Guest::cetak_nota/$1');
