@@ -24,15 +24,19 @@
                             <label style="font-size: 12px;">Hp</label>
                             <input placeholder="Hp" type="text" name="hp" class="form-control form-control-sm" required>
                         </div>
+                        <?php if (user()['role'] == "Root" || user()['role'] == "Advisor"): ?>
+                            <div class="mb-3">
+                                <label style="font-size: 12px;">Role</label>
+                                <select class="form-select form-select-sm mb-3" name="role">
+                                    <?php foreach (options('role') as $i): ?>
+                                        <?php if (user()['role'] == "Advisor" && $i['value'] !== "Root" && $i['value'] !== "Advisor"): ?>
+                                            <option <?= ($i['value'] == 'Member' ? 'selected' : ''); ?> value="<?= $i['value']; ?>"><?= $i['value']; ?></option>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
 
-                        <div class="mb-3">
-                            <label style="font-size: 12px;">Role</label>
-                            <select class="form-select form-select-sm mb-3" name="role">
-                                <?php foreach (options('role') as $i): ?>
-                                    <option <?= ($i['value'] == 'Member' ? 'selected' : ''); ?> value="<?= $i['value']; ?>"><?= $i['value']; ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
+                        <?php endif; ?>
 
                         <div class="d-grid">
                             <button class="btn btn-sm link_secondary"><i class="fa-solid fa-floppy-disk"></i> Save</button>
@@ -49,7 +53,7 @@
     <div style="font-size:small;"><span class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i></span> DATA TIDAK DITEMUKAN!.</div>
 <?php else: ?>
     <div class="input-group input-group-sm mb-3">
-        <span class="input-group-text bg_main border border_main">Cari Data</span>
+        <span class="input-group-text bg_main border_main text_main">Cari Data</span>
         <input type="text" class="form-control cari bg_main border border_main text_main" placeholder="....">
     </div>
     <table class="table table-sm table-bordered bg_main text_main" style="font-size: 14px;">
@@ -59,7 +63,9 @@
                 <th class="text-center">Nama</th>
                 <th class="text-center">Role</th>
                 <th class="text-center">Hp</th>
-                <th class="text-center">Link</th>
+                <?php if (user()['role'] == "Root"): ?>
+                    <th class="text-center">Link</th>
+                <?php endif; ?>
                 <th class="text-center">Act</th>
             </tr>
         </thead>
@@ -70,8 +76,24 @@
                     <td><?= $i['nama']; ?></td>
                     <td><?= $i['role']; ?></td>
                     <td><?= $i['hp']; ?></td>
-                    <td class="text-center"><a role="button" class="copy_text link_main rounded py-1 px-2" data-text="<?= $i['link']; ?>" href=""><i class="fa-solid fa-link"></i> Link</a></td>
-                    <td class="text-center"><a href="" role="button" class="text-danger fs-6 btn_confirm btn_confirm_<?= $i['id']; ?>" data-tabel="<?= menu()['tabel']; ?>" data-id="<?= $i['id']; ?>"><i class="fa-solid fa-trash-can"></i></a> <a role="button" class="text-warning fs-6 btn_update" data-id="<?= $i['id']; ?>" href=""><i class="fa-solid fa-square-pen"></i></a></td>
+                    <?php if (user()['role'] == "Root"): ?>
+                        <td class="text-center"><a role="button" class="copy_text link_main rounded py-1 px-2" data-text="<?= $i['link']; ?>" href=""><i class="fa-solid fa-link"></i> Link</a></td>
+                    <?php endif; ?>
+                    <?php if (user()['role'] == "Root"): ?>
+                        <td class="text-center"><a href="" role="button" class="text-danger fs-6 btn_confirm btn_confirm_<?= $i['id']; ?>" data-tabel="<?= menu()['tabel']; ?>" data-id="<?= $i['id']; ?>"><i class="fa-solid fa-trash-can"></i></a> <a role="button" class="text-warning fs-6 btn_update" data-id="<?= $i['id']; ?>" href=""><i class="fa-solid fa-square-pen"></i></a></td>
+                    <?php elseif (user()['role'] == "Advisor"): ?>
+                        <?php if ($i['role'] == "Root" || $i['role'] == "Advisor"): ?>
+                            <td class="text-center"><i class="fa-solid fa-ban"></i> <a role="button" class="text-warning fs-6 btn_update" data-id="<?= $i['id']; ?>" href=""><i class="fa-solid fa-square-pen"></i></a></td>
+                        <?php else: ?>
+                            <td class="text-center"><a href="" role="button" class="text-danger fs-6 btn_confirm btn_confirm_<?= $i['id']; ?>" data-tabel="<?= menu()['tabel']; ?>" data-id="<?= $i['id']; ?>"><i class="fa-solid fa-trash-can"></i></a> <a role="button" class="text-warning fs-6 btn_update" data-id="<?= $i['id']; ?>" href=""><i class="fa-solid fa-square-pen"></i></a></td>
+                        <?php endif; ?>
+                    <?php elseif (user()['role'] == "Admin"): ?>
+                        <?php if ($i['role'] == "Root" || $i['role'] == "Advisor" || $i['role'] == "Admin"): ?>
+                            <td class="text-center"><i class="fa-solid fa-ban"></i> <a role="button" class="text-warning fs-6 btn_update" data-id="<?= $i['id']; ?>" href=""><i class="fa-solid fa-square-pen"></i></a></td>
+                        <?php else: ?>
+                            <td class="text-center"><a href="" role="button" class="text-danger fs-6 btn_confirm btn_confirm_<?= $i['id']; ?>" data-tabel="<?= menu()['tabel']; ?>" data-id="<?= $i['id']; ?>"><i class="fa-solid fa-trash-can"></i></a> <a role="button" class="text-warning fs-6 btn_update" data-id="<?= $i['id']; ?>" href=""><i class="fa-solid fa-square-pen"></i></a></td>
+                        <?php endif; ?>
+                    <?php endif; ?>
                 </tr>
             <?php endforeach; ?>
         </tbody>
@@ -81,6 +103,7 @@
 <script>
     let data = <?= json_encode($data); ?>;
     let options = <?= json_encode(options('Role')); ?>;
+    let role = "<?= user()['role']; ?>";
 
     $(document).on("click", ".btn_confirm", function(e) {
         e.preventDefault();
@@ -111,21 +134,25 @@
                           <div class="mb-3">
                             <label style="font-size: 12px;">Hp</label>
                             <input placeholder="Hp" type="text" name="hp" value="${val.hp}" class="form-control form-control-sm" required>
-                        </div>
+                        </div>`;
+        if (role == "Root" || role == "Advisor") {
+            html += `<div class="mb-3">
+            <label style="font-size: 12px;">Role</label>
+            <select class="form-select form-select-sm mb-3" name="role">`;
 
-                        <div class="mb-3">
-                            <label style="font-size: 12px;">Role</label>
-                            <select class="form-select form-select-sm mb-3" name="role">`;
-
-        options.forEach(o => {
-            html += `<option ${(o.value==val.role?'selected':'')} value="${o.value}">${o.value}</option>`
-        });
+            options.forEach(o => {
+                if (role == "Advisor" && o.value !== "Root" && o.value !== "Advisor") {
+                    html += `<option ${(o.value==val.role?'selected':'')} value="${o.value}">${o.value}</option>`
+                }
+            });
 
 
-        html += `</select>
-                        </div>
+            html += `</select>
+                    </div>`;
 
-                        <div class="d-grid">
+        }
+
+        html += `<div class="d-grid">
                             <button class="btn btn-sm link_secondary"><i class="fa-solid fa-square-pen"></i> Update</button>
                         </div>
                     </form></div>`;

@@ -61,7 +61,7 @@
     <div style="font-size:small;"><span class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i></span> DATA TIDAK DITEMUKAN!.</div>
 <?php else: ?>
     <div class="input-group input-group-sm mb-3">
-        <span class="input-group-text bg_main border border_main">Cari Data</span>
+        <span class="input-group-text bg_main border_main text_main">Cari Data</span>
         <input type="text" class="form-control cari bg_main border border_main text_main" placeholder="....">
     </div>
     <table class="table table-sm table-bordered bg_main text_main" style="font-size: 14px;">

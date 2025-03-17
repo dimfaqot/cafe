@@ -35,6 +35,10 @@ class User extends BaseController
         $role = clear(upper_first($this->request->getVar('role')));
         $hp = clear(upper_first($this->request->getVar('hp')));
 
+        if (user()['role'] == "Admin") {
+            $role = "Member";
+        }
+
         $db = db(menu()['tabel']);
         if ($db->where('nama', $nama)->where('role', $role)->get()->getRowArray()) {
             gagal(base_url(menu()['controller']), "Nama sudah ada!.");
@@ -61,6 +65,10 @@ class User extends BaseController
         $nama = clear(upper_first($this->request->getVar('nama')));
         $role = clear(upper_first($this->request->getVar('role')));
         $hp = clear(upper_first($this->request->getVar('hp')));
+
+        if (user()['role'] == "Admin") {
+            $role = "Member";
+        }
 
         $db = db(menu()['tabel']);
         $q = $db->where('id', $id)->get()->getRowArray();

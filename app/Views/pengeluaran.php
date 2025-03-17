@@ -11,8 +11,8 @@
     <div style="font-size:small;"><span class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i></span> DATA TIDAK DITEMUKAN!.</div>
 <?php else: ?>
     <div class="input-group input-group-sm mb-3">
-        <span class="input-group-text bg-secondary border border-light">Cari Data</span>
-        <input type="text" class="form-control cari bg-secondary border border-light text-light" placeholder="....">
+        <span class="input-group-text bg_main border_main text_main">Cari Data</span>
+        <input type="text" class="form-control cari bg_main border border_main text_main" placeholder="....">
     </div>
     <table class="table table-sm table-dark table-bordered" style="font-size: 14px;">
         <thead>
@@ -402,7 +402,7 @@
 
         let total = $(this).data("total");
         let html = "";
-        html += `<div class="container border border-light rounded p-2">
+        html += `<div class="container border border_main rounded p-2">
                         <div class="text-center mb-3">
                             <span class="text_main" style="font-size: small;">TOTAL</span>
                             <div class="fw-bold total_pembayaran">${angka(total)}</div>
@@ -520,7 +520,7 @@
                 modal.hide();
 
                 let html = "";
-                html += `<div class="container border border-light rounded p-2">
+                html += `<div class="container border border_main rounded p-2">
                                 <div class="text-center mb-3">
                                     <span class="text_main" style="font-size: small;">UANG KEMBALIAN</span>
                                     <div class="fw-bold total_pembayaran">${angka(res.data)}</div>
