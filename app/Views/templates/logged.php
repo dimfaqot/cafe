@@ -391,13 +391,18 @@
             selection.addRange(range);
         });
 
-        const time_php_to_js = (date) => {
+        const time_php_to_js = (date, order = undefined) => {
             let d = new Date(date * 1000);
             let month = (d.getMonth() + 1).toString().padStart(2, '0'); // Bulan dimulai dari 0, sehingga harus ditambah 1
             let day = d.getDate().toString().padStart(2, '0');
             let year = d.getFullYear();
 
             let res = `${day}/${month}/${year}`;
+            if (order !== undefined) {
+                if (order == "d") {
+                    res = day;
+                }
+            }
             return res;
         }
 

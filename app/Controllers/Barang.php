@@ -41,8 +41,8 @@ class Barang extends BaseController
             'tgl' => time(),
             'barang' => $barang,
             'kategori' => $kategori,
-            'qty' => ($kategori == "Barang" ? 0 : $qty),
-            'harga' => ($kategori == "Barang" ? 0 : $harga),
+            'qty' => ($kategori !== "Barang" ? 0 : $qty),
+            'harga' => ($kategori !== "Barang" ? 0 : $harga),
             'updated_at' => time(),
             'petugas' => user()['nama']
         ];
@@ -74,8 +74,8 @@ class Barang extends BaseController
 
 
         $q['barang'] = $barang;
-        $q['qty'] =  ($kategori == "Barang" ? 0 : $qty);
-        $q['harga'] =  ($kategori == "Barang" ? 0 : $harga);
+        $q['qty'] =  ($kategori !== "Barang" ? 0 : $qty);
+        $q['harga'] =  ($kategori !== "Barang" ? 0 : $harga);
         $q['updated_at'] = time();
         $q['petugas'] = user()['nama'];
 

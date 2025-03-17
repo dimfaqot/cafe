@@ -50,8 +50,11 @@ class Penjualan extends BaseController
         $nama_pembeli = upper_first(clear($this->request->getVar('nama_pembeli')));
         $ket = clear($this->request->getVar('ket'));
         $user_id = clear($this->request->getVar('user_id'));
+        $order = clear($this->request->getVar('order'));
 
         $total = 0;
+
+
         foreach ($data as $i) {
             $total += (int)$i['total'];
         }
@@ -66,33 +69,43 @@ class Penjualan extends BaseController
         $total_2 = 0;
         $err = [];
         foreach ($data as $i) {
-            $data = [
-                'no_nota' => end($no_nota),
-                'tgl' => time(),
-                'pembeli' => $nama_pembeli,
-                'petugas' => user()['nama'],
-                'barang' => $i['barang'],
-                'qty' => $i['qty'],
-                'diskon' => $i['diskon'],
-                'harga' => $i['harga'],
-                'total' => $i['total'],
-                'user_id' => $user_id,
-                'ket' => $ket
-            ];
-
-
-            if ($db->insert($data)) {
-                $total_2 += $i['total'];
-
-                $barang = $dbb->where('id', $i['id'])->get()->getRowArray();
-
-                if ($barang) {
-                    $barang['qty'] -= (int)$i['qty'];
-                    $dbb->where('id', $barang['id']);
-                    $dbb->update($barang);
+            if ($order == "Lunas") {
+                $i['ket'] = $ket;
+                $db->where('id', $i['id']);
+                if ($db->update($i)) {
+                    $total_2 += $i['total'];
+                } else {
+                    $err[] = $i['barang'];
                 }
             } else {
-                $err[] = $i['barang'];
+                $data = [
+                    'no_nota' => end($no_nota),
+                    'tgl' => time(),
+                    'pembeli' => $nama_pembeli,
+                    'petugas' => user()['nama'],
+                    'barang' => $i['barang'],
+                    'qty' => $i['qty'],
+                    'diskon' => $i['diskon'],
+                    'harga' => $i['harga'],
+                    'total' => $i['total'],
+                    'user_id' => $user_id,
+                    'ket' => $ket
+                ];
+
+
+                if ($db->insert($data)) {
+                    $total_2 += $i['total'];
+
+                    $barang = $dbb->where('id', $i['id'])->get()->getRowArray();
+
+                    if ($barang) {
+                        $barang['qty'] -= (int)$i['qty'];
+                        $dbb->where('id', $barang['id']);
+                        $dbb->update($barang);
+                    }
+                } else {
+                    $err[] = $i['barang'];
+                }
             }
         }
 

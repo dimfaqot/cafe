@@ -55,22 +55,28 @@
     <table class="table table-sm table-bordered bg_main text_main" style="font-size: 14px;">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Tgl</th>
-                <th>Barang</th>
-                <th>Total</th>
-                <th>Act</th>
+                <th class="text-center">#</th>
+                <th class="text-center">Tgl</th>
+                <th class="text-center">Nota</th>
+                <th class="text-center">Barang</th>
+                <th class="text-center">Total</th>
+                <th class="text-center">Act</th>
             </tr>
         </thead>
         <tbody class="tabel_search">
             <?php foreach ($data as $k => $i): ?>
                 <?php $total += $i['total']; ?>
                 <tr>
-                    <td><?= $k + 1; ?></td>
-                    <td><?= date('d/m/Y', $i['tgl']); ?></td>
-                    <td><?= $i['barang']; ?></td>
-                    <td class="text-end"><?= angka($i['total']); ?></td>
-                    <td><a data-id="<?= $i['id']; ?>" href="" class="text_main btn_detail"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+                    <td class="<?= ($i['ket'] == "Hutang" ? "bg-danger bg-opacity-10" : ""); ?> text-center"><?= $k + 1; ?></td>
+                    <td class="<?= ($i['ket'] == "Hutang" ? "bg-danger bg-opacity-10" : ""); ?> text-center"><?= date('d', $i['tgl']); ?></td>
+                    <?php if ($i['ket'] == "Hutang"): ?>
+                        <td class="bg-danger bg-opacity-10 text-center"><a data-no_nota="<?= $i['no_nota']; ?>" class="text_main btn_lunas" href=""><?= $i['no_nota']; ?></a></td>
+                    <?php else: ?>
+                        <td class="text-center"><?= $i['no_nota']; ?></td>
+                    <?php endif; ?>
+                    <td class="<?= ($i['ket'] == "Hutang" ? "bg-danger bg-opacity-10" : ""); ?>"><?= $i['barang']; ?></td>
+                    <td class="<?= ($i['ket'] == "Hutang" ? "bg-danger bg-opacity-10" : ""); ?> text-end"><?= angka($i['total']); ?></td>
+                    <td class="<?= ($i['ket'] == "Hutang" ? "bg-danger bg-opacity-10" : ""); ?> text-center"><a data-id="<?= $i['id']; ?>" href="" class="text_main btn_detail"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
@@ -145,6 +151,67 @@
 
         popupButton.html(html);
     })
+    // $(document).on("click", ".btn_lunas", function(e) {
+    //     e.preventDefault();
+    //     let no_nota = $(this).data("no_nota");
+
+    //     let val = [];
+    //     let total = 0;
+    //     data.forEach(e => {
+    //         if (e.no_nota == no_nota) {
+    //             total += parseInt(e.total);
+    //             val.push(e);
+    //         }
+    //     });
+    //     daftar_transaksi = val;
+    //     let html = "";
+
+    //     html += `
+    //             <div class="input-group input-group-sm mb-2">
+    //                 <span class="input-group-text bg_main border border_main">No. Nota</span>
+    //                 <input type="text" class="form-control bg_main border border_main text_main" value="${val[0].no_nota}">
+    //             </div>
+    //             <div class="input-group input-group-sm mb-3">
+    //                 <span class="input-group-text bg_main border border_main">Pembeli</span>
+    //                 <input type="text" class="form-control bg_main border border_main text_main" value="${val[0].pembeli}">
+    //             </div>
+    //              <div class="text-center mb-3">
+    //                     <span class="text_main" style="font-size: small;">Uang Pembayaran</span>
+    //                     <input type="text" class="mt-2 form-control uang_pembayaran text-center angka" value="${angka(total)}" placeholder="Uang pembayaran">
+    //             </div>
+    //             <table class="table table-sm table-dark table-bordered" style="font-size: 12px;">
+    //                         <thead>
+    //                             <tr>
+    //                                 <th text-center>#</th>
+    //                                 <th text-center>Barang</th>
+    //                                 <th text-center>Qty</th>
+    //                                 <th text-center>Diskon</th>
+    //                                 <th text-center>Harga</th>
+    //                             </tr>
+    //                         </thead>
+    //                         <tbody class="isi_transaksi">`;
+    //     html += isi_transaksi_template("lunas");
+    //     html += '</tbody>'
+    //     html += '</table>';
+
+
+    //     html += '</div>';
+
+
+    //     popupButton.html(html);
+
+    //     setTimeout(() => {
+    //         $('#fullscreen').on('shown.bs.modal', function() {
+    //             let input = $('.nama_pembeli');
+    //             input.focus();
+
+    //             // Pindahkan kursor ke akhir teks di input
+    //             let inputElement = input[0];
+    //             let length = inputElement.value.length;
+    //             inputElement.setSelectionRange(length, length);
+    //         });
+    //     }, 200);
+    // })
 
 
     $(document).on("click", ".transaksi", function(e) {
@@ -329,7 +396,7 @@
 
         let total = 0;
         daftar_transaksi.forEach((e, i) => {
-            total += e.total;
+            total += parseInt(e.total);
             html += '<tr>';
             html += '<td>' + (i + 1) + '</td>';
             html += '<td>' + e.barang + '</td>';
@@ -484,7 +551,11 @@
                         </div>
                         <div class="mb-3 text-center">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" name="metode_bayar" type="radio" value="Cash" checked>
+                                <input class="form-check-input" name="metode_bayar" type="radio" value="Hutang" checked>
+                                <label class="form-check-label">Hutang</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="metode_bayar" type="radio" value="Cash">
                                 <label class="form-check-label">Cash</label>
                             </div>
                             <div class="form-check form-check-inline">
@@ -541,12 +612,107 @@
         }, 200);
 
     });
+    $(document).on('click', '.btn_lunas', function(e) {
+        e.preventDefault();
+
+        let no_nota = $(this).data("no_nota");
+
+        let val = [];
+        let total = 0;
+        data.forEach(e => {
+            if (e.no_nota == no_nota) {
+                total += parseInt(e.total);
+                val.push(e);
+            }
+        });
+
+        daftar_transaksi = val;
+        let html = "";
+        html += `<div class="container border border-light rounded p-2">
+            <div class="input-group input-group-sm mb-2">
+                 <span class="input-group-text bg_main border border_main">No. Nota</span>
+                 <input type="text" class="form-control bg_main border border_main text_main" value="${val[0].no_nota}">
+             </div>
+             <div class="input-group input-group-sm mb-3">
+                 <span class="input-group-text bg_main border border_main">Pembeli</span>
+                 <input type="text" class="form-control bg_main border border_main text_main" value="${val[0].pembeli}">
+             </div>
+                        <div class="text-center mb-3">
+                            <span class="text_main" style="font-size: small;">TOTAL</span>
+                            <div class="fw-bold total_pembayaran">${angka(total)}</div>
+                        </div>
+                        <hr>
+                      
+                        <div class="text-center mb-3">
+                            <span class="text_main" style="font-size: small;">Uang Pembayaran</span>
+                            <input type="text" class="mt-2 form-control uang_pembayaran text-center angka" value="${angka(total)}" placeholder="Uang pembayaran">
+                        </div>
+                        <div class="mb-3 text-center">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="metode_bayar" type="radio" value="Cash" checked>
+                                <label class="form-check-label">Cash</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="metode_bayar" type="radio" value="Barcode">
+                                <label class="form-check-label">Barcode</label>
+                            </div>
+                        </div>
+                    <div class="d-grid">
+                        <button data-no_nota="${no_nota}" data-order="Lunas" class="btn btn-sm btn-success btn_transaksi"><i class="fa-solid fa-wallet"></i> OK</button>
+                    </div>`;
+
+        html += '<div class="accordion accordion-flush mt-3" id="accordionFlushExample">';
+        html += '<div class="accordion-item bg_main">';
+        html += '<h2 class="accordion-header" id="flush-headingOne">';
+        html += '<button style="font-size: small;" class="p-1 accordion-button collapsed bg_main text-light border border_main" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">';
+        html += 'DETAIL';
+        html += '</button>';
+        html == '</h2>';
+        html += '<div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">';
+        html += `<table id="rincian_transaksi" class="table table-sm table-dark table-bordered" style="font-size: 12px;">
+                            <thead>
+                                <tr>
+                                    <th text-center>#</th>
+                                    <th text-center>Barang</th>
+                                    <th text-center>Qty</th>
+                                    <th text-center>Diskon</th>
+                                    <th text-center>Harga</th>
+                                </tr>
+                            </thead>
+                            <tbody class="isi_transaksi">`;
+        html += isi_transaksi_template("no");
+        html += '</tbody>'
+        html += '</table>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+
+
+        html += '</div>';
+
+
+        popupButton.html(html);
+
+        setTimeout(() => {
+            $('#fullscreen').on('shown.bs.modal', function() {
+                let input = $('.nama_pembeli');
+                input.focus();
+
+                // Pindahkan kursor ke akhir teks di input
+                let inputElement = input[0];
+                let length = inputElement.value.length;
+                inputElement.setSelectionRange(length, length);
+            });
+        }, 200);
+
+    });
 
     $(document).on('click', '.btn_transaksi', function(e) {
         e.preventDefault();
         let uang_pembayaran = parseInt(str_replace(".", "", $(".uang_pembayaran").val()));
         let total_pembayaran = parseInt(str_replace(".", "", $(".total_pembayaran").text()));
         let no_nota = $(this).data('no_nota');
+        let order = $(this).data('order');
         let nama_pembeli = $(".nama_pembeli").val();
         let user_id = $(".btn_transaksi").data("id");
         let ket = $('input[name="metode_bayar"]:checked').val();
@@ -569,7 +735,8 @@
             no_nota,
             daftar_transaksi,
             user_id,
-            ket
+            ket,
+            order
         }).then(res => {
             if (res.status == "200") {
                 let myModal = document.getElementById("fullscreen");
@@ -586,10 +753,12 @@
                 if (res.data2.length > 0) {
                     html += '<div class="bg-opacity-25 bg-danger border border-danger mb-2" px-5 pb-1 rounded text-center" style="font-size: medium;">GAGAL: ' + res.data + '</div>';
                 }
-                html += `<div class="d-grid">
-                                    <a target="_blank" href="${res.data3}" class="btn btn-sm btn-success"><i class="fa-regular fa-file-pdf"></i> Cetak Nota</a>
-                                    </div>
-                            </div>`;
+                if (ket !== "Hutang") {
+                    html += `<div class="d-grid">
+                                        <a target="_blank" href="${res.data3}" class="btn btn-sm btn-success"><i class="fa-regular fa-file-pdf"></i> Cetak Nota</a>
+                                        </div>
+                                </div>`;
+                }
 
                 popupButton.html(html);
             } else {
