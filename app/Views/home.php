@@ -2,7 +2,7 @@
 
 <?= $this->section('content') ?>
 
-<div class="text-center mb-3" style="margin-top: 100px;">WELCOME <b><?= strtoupper(user()['nama']); ?></b></div>
+<div class="text-center mb-3" style="margin-top: 60px;">WELCOME <b><?= strtoupper(user()['nama']); ?></b></div>
 
 <div class="d-flex justify-content-between bg_secondary p-2" style="border-radius:10px 10px 0px 0px">
     <div style="font-size: 10px;">
