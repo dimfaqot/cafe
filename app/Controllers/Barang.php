@@ -29,8 +29,8 @@ class Barang extends BaseController
     {
         $barang = upper_first(clear($this->request->getVar('barang')));
         $kategori = upper_first(clear($this->request->getVar('kategori')));
-        $qty = (int)str_replace(".", "", clear($this->request->getVar('qty')));
-        $harga = (int)str_replace(".", "", clear($this->request->getVar('harga')));
+        $qty = rp_to_int(clear($this->request->getVar('qty')));
+        $harga = rp_to_int(clear($this->request->getVar('harga')));
 
         $db = db(menu()['tabel']);
         if ($db->where('barang', $barang)->get()->getRowArray()) {
@@ -58,8 +58,8 @@ class Barang extends BaseController
         $id = clear($this->request->getVar('id'));
         $barang = upper_first(clear($this->request->getVar('barang')));
         $kategori = upper_first(clear($this->request->getVar('kategori')));
-        $qty = (int)str_replace(".", "", clear($this->request->getVar('qty')));
-        $harga = (int)str_replace(".", "", clear($this->request->getVar('harga')));
+        $qty = rp_to_int(clear($this->request->getVar('qty')));
+        $harga = rp_to_int(clear($this->request->getVar('harga')));
 
         $db = db(menu()['tabel']);
         $q = $db->where('id', $id)->get()->getRowArray();

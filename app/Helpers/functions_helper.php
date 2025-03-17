@@ -478,3 +478,9 @@ function get_tahun()
 
     return $tahuns;
 }
+
+function rp_to_int($rp)
+{
+    $r = str_replace(",", "", str_replace(".", "", $rp));
+    return (int)$r;
+}

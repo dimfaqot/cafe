@@ -17,6 +17,7 @@ class Pengeluaran extends BaseController
 
     public function index(): string
     {
+
         $db = db(menu()['tabel']);
 
         $q = $db->orderBy('tgl', 'DESC')->get()->getResultArray();
@@ -44,7 +45,7 @@ class Pengeluaran extends BaseController
     public function transaksi()
     {
         $data = json_decode(json_encode($this->request->getVar('daftar_transaksi')), true);
-        $uang_pembayaran = (int)clear($this->request->getVar('uang_pembayaran'));
+        $uang_pembayaran = rp_to_int(clear($this->request->getVar('uang_pembayaran')));
         $nama_penjual = upper_first(clear($this->request->getVar('nama_penjual')));
         $petugas = upper_first(clear($this->request->getVar('petugas')));
         $kategori = upper_first(clear($this->request->getVar('kategori')));
@@ -64,6 +65,10 @@ class Pengeluaran extends BaseController
         $total_2 = 0;
         $err = [];
         foreach ($data as $i) {
+            $i['qty'] = rp_to_int($i['qty']);
+            $i['diskon'] = rp_to_int($i['diskon']);
+            $i['harga'] = rp_to_int($i['harga']);
+            $i['total'] = rp_to_int($i['total']);
             $data = [
                 'tgl' => time(),
                 'kategori' => $kategori,
@@ -83,7 +88,7 @@ class Pengeluaran extends BaseController
                 $barang = $dbb->where('id', $i['id'])->get()->getRowArray();
 
                 if ($barang) {
-                    $barang['qty'] += (int)$i['qty'];
+                    $barang['qty'] += $i['qty'];
                     $dbb->where('id', $barang['id']);
                     $dbb->update($barang);
                 }

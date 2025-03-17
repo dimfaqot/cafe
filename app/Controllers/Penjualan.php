@@ -46,7 +46,7 @@ class Penjualan extends BaseController
     {
         $data = json_decode(json_encode($this->request->getVar('daftar_transaksi')), true);
         $no_nota = explode(": ", clear($this->request->getVar('no_nota')));
-        $uang_pembayaran = (int)clear($this->request->getVar('uang_pembayaran'));
+        $uang_pembayaran = rp_to_int(clear($this->request->getVar('uang_pembayaran')));
         $nama_pembeli = upper_first(clear($this->request->getVar('nama_pembeli')));
         $ket = clear($this->request->getVar('ket'));
         $user_id = clear($this->request->getVar('user_id'));
@@ -69,6 +69,10 @@ class Penjualan extends BaseController
         $total_2 = 0;
         $err = [];
         foreach ($data as $i) {
+            $i['qty'] = rp_to_int($i['qty']);
+            $i['diskon'] = rp_to_int($i['diskon']);
+            $i['harga'] = rp_to_int($i['harga']);
+            $i['total'] = rp_to_int($i['total']);
             if ($order == "Lunas") {
                 $i['ket'] = $ket;
                 $db->where('id', $i['id']);
@@ -99,7 +103,7 @@ class Penjualan extends BaseController
                     $barang = $dbb->where('id', $i['id'])->get()->getRowArray();
 
                     if ($barang) {
-                        $barang['qty'] -= (int)$i['qty'];
+                        $barang['qty'] -= $i['qty'];
                         $dbb->where('id', $barang['id']);
                         $dbb->update($barang);
                     }
