@@ -466,7 +466,7 @@ function no_nota($tgl)
 
 function get_tahun()
 {
-    $db = db('pengeluaran');
+    $db = db('penjualan');
     $q = $db->orderBy('tgl', 'DESC')->get()->getResultArray();
     $tahuns = [];
 

@@ -10,6 +10,9 @@
     <link rel="icon" type="image/png" href="<?= base_url('logo.png'); ?>" sizes="16x16">
     <link href="<?= base_url(); ?>fontawesome/css/all.css" rel="stylesheet">
     <script src="<?= base_url(); ?>jquery.js"></script>
+    <?php if (url() == "home") : ?>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <?php endif; ?>
     <link rel="stylesheet" href="<?= base_url('bootstrap'); ?>/css/bootstrap.min.css">
     <script src="<?= base_url('bootstrap'); ?>/js/bootstrap.bundle.min.js"></script>
     <style>
@@ -17,12 +20,20 @@
             background-color: <?= $tema['bg_main']; ?>;
         }
 
+        .bg_secondary {
+            background-color: <?= $tema['link_secondary']; ?>;
+        }
+
         .text_main {
             color: <?= $tema['text_main']; ?>;
         }
 
         .border_main {
-            color: <?= $tema['border_main']; ?>;
+            border: 1px solid <?= $tema['border_main']; ?>;
+        }
+
+        .border_bottom {
+            border-bottom: 1px solid <?= $tema['border_main']; ?>;
         }
 
         .link_main {
@@ -77,6 +88,16 @@
                 $(".message").html("");
             }, 1000);
 
+        }
+        async function post(url = '', data = {}) {
+            const response = await fetch("<?= base_url(); ?>" + url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+            return response.json(); // parses JSON response into native JavaScript objects
         }
 
         const tes = '';

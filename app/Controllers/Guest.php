@@ -82,7 +82,7 @@ class Guest extends BaseController
 
         $mpdf = new \Mpdf\Mpdf($set);
 
-        $judul = "LAPORAN TB BULAN " . strtoupper($bulan) . " TAHUN " . $tahun;
+        $judul = "LAPORAN CAFE BULAN " . strtoupper($bulan) . " TAHUN " . $tahun;
         // Dapatkan konten HTML
         $logo = '<img width="90" src="logo.png" alt="KOP"/>';
         $html = view('cetak/laporan', ['judul' => $judul, 'logo' => $logo, 'tahun' => $tahun, 'bulan' => $bulan, 'masuk' => $data_masuk, 'keluar' => $data_keluar, 'total_masuk' => $total_masuk, 'total_keluar' => $total_keluar]); // view('pdf_template') mengacu pada file view yang akan dirender menjadi PDF

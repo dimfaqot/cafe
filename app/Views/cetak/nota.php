@@ -44,14 +44,14 @@
     <table style="width:100%;">
         <tr>
             <td rowspan="4" style="width: 100px;"><?= $logo; ?></td>
-            <td style="font-size:14px;">TOKO BANGUNAN</td>
+            <td style="font-size:14px;">KEMANDIRIAN PONPES WALISONGO SRAGEN</td>
         </tr>
         <tr>
-            <th style="text-align: left;font-size:16px">RONGGOLAWE WALISONGO</th>
+            <th style="text-align: left;font-size:16px">CAFE WALISONGO</th>
         </tr>
 
         <tr>
-            <td style="font-size: 12px;border-bottom:3px solid black">Menyediakan: Peralatan Bangunan & Material Bangunan</td>
+            <td style="font-size: 12px;border-bottom:3px solid black">Menyediakan: Makanan - Minuman - Snack</td>
         </tr>
         <tr>
             <td style="font-size: 10px;font-style:italic">Alamat: Sungkul - Plumbungan - Karangmalang - Sragen - 0989789898</td>

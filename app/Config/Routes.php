@@ -14,6 +14,7 @@ $routes->get('/home', 'Home::index');
 $routes->post('/home/delete', 'Home::delete');
 $routes->get('logout', 'Home::logout');
 $routes->post('/home/switch_tema', 'Home::switch_tema');
+$routes->post('/home/statistik', 'Home::statistik');
 
 // menu
 $routes->get('/menu', 'Menu::index');

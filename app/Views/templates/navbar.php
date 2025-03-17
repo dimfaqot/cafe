@@ -1,7 +1,7 @@
  <!-- navbar md-->
- <div class="d-none d-md-block fixed-top shadow shadow-sm">
+ <div class="d-none d-md-block fixed-top">
 
-     <div class="fixed-top bg_main border-bottom border_main py-3">
+     <div class="fixed-top bg_main py-3 border_bottom">
          <div class="container">
              <div class="d-flex justify-content-between">
                  <div class="d-flex gap-2">
@@ -43,7 +43,7 @@
  <!-- navbar sm -->
  <div class="d-block d-md-none d-sm-block fixed-top" style="font-size: 12px;">
 
-     <div class="fixed-top bg_main border-bottom border_main py-3">
+     <div class="fixed-top bg_main border_bottom py-3">
          <div class="container">
              <div class="d-flex justify-content-between">
                  <a class="link_main btn btn-sm" href=""><i class="<?= menu()['icon']; ?>"></i> <?= menu()['menu']; ?></a>
