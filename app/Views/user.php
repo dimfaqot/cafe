@@ -81,18 +81,10 @@
                     <?php endif; ?>
                     <?php if (user()['role'] == "Root"): ?>
                         <td class="text-center"><a href="" role="button" class="text-danger fs-6 btn_confirm btn_confirm_<?= $i['id']; ?>" data-tabel="<?= menu()['tabel']; ?>" data-id="<?= $i['id']; ?>"><i class="fa-solid fa-trash-can"></i></a> <a role="button" class="text-warning fs-6 btn_update" data-id="<?= $i['id']; ?>" href=""><i class="fa-solid fa-square-pen"></i></a></td>
-                    <?php elseif (user()['role'] == "Advisor"): ?>
-                        <?php if ($i['role'] == "Root" || $i['role'] == "Advisor"): ?>
-                            <td class="text-center"><i class="fa-solid fa-ban"></i> <a role="button" class="text-warning fs-6 btn_update" data-id="<?= $i['id']; ?>" href=""><i class="fa-solid fa-square-pen"></i></a></td>
-                        <?php else: ?>
-                            <td class="text-center"><a href="" role="button" class="text-danger fs-6 btn_confirm btn_confirm_<?= $i['id']; ?>" data-tabel="<?= menu()['tabel']; ?>" data-id="<?= $i['id']; ?>"><i class="fa-solid fa-trash-can"></i></a> <a role="button" class="text-warning fs-6 btn_update" data-id="<?= $i['id']; ?>" href=""><i class="fa-solid fa-square-pen"></i></a></td>
-                        <?php endif; ?>
-                    <?php elseif (user()['role'] == "Admin"): ?>
-                        <?php if ($i['role'] == "Root" || $i['role'] == "Advisor" || $i['role'] == "Admin"): ?>
-                            <td class="text-center"><i class="fa-solid fa-ban"></i> <a role="button" class="text-warning fs-6 btn_update" data-id="<?= $i['id']; ?>" href=""><i class="fa-solid fa-square-pen"></i></a></td>
-                        <?php else: ?>
-                            <td class="text-center"><a href="" role="button" class="text-danger fs-6 btn_confirm btn_confirm_<?= $i['id']; ?>" data-tabel="<?= menu()['tabel']; ?>" data-id="<?= $i['id']; ?>"><i class="fa-solid fa-trash-can"></i></a> <a role="button" class="text-warning fs-6 btn_update" data-id="<?= $i['id']; ?>" href=""><i class="fa-solid fa-square-pen"></i></a></td>
-                        <?php endif; ?>
+                    <?php elseif (user()['role'] == "Admin" && $i['role'] == "Member"): ?>
+                        <td class="text-center"><a href="" role="button" class="text-danger fs-6 btn_confirm btn_confirm_<?= $i['id']; ?>" data-tabel="<?= menu()['tabel']; ?>" data-id="<?= $i['id']; ?>"><i class="fa-solid fa-trash-can"></i></a> <a role="button" class="text-warning fs-6 btn_update" data-id="<?= $i['id']; ?>" href=""><i class="fa-solid fa-square-pen"></i></a></td>
+                    <?php else: ?>
+                        <td class="text-center"><i class="fa-solid fa-ban"></i></td>
                     <?php endif; ?>
                 </tr>
             <?php endforeach; ?>
@@ -135,15 +127,15 @@
                             <label style="font-size: 12px;">Hp</label>
                             <input placeholder="Hp" type="text" name="hp" value="${val.hp}" class="form-control form-control-sm" required>
                         </div>`;
-        if (role == "Root" || role == "Advisor") {
+        if (role == "Root") {
             html += `<div class="mb-3">
             <label style="font-size: 12px;">Role</label>
             <select class="form-select form-select-sm mb-3" name="role">`;
 
             options.forEach(o => {
-                if (role == "Advisor" && o.value !== "Root" && o.value !== "Advisor") {
-                    html += `<option ${(o.value==val.role?'selected':'')} value="${o.value}">${o.value}</option>`
-                }
+
+                html += `<option ${(o.value==val.role?'selected':'')} value="${o.value}">${o.value}</option>`
+
             });
 
 
