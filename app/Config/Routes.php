@@ -55,3 +55,6 @@ $routes->post('/pengeluaran/user', 'Pengeluaran::user');
 // guest
 $routes->get('guest/laporan/(:any)/(:num)', 'Guest::laporan/$1/$2');
 $routes->get('/guest/cetak_nota/(:any)', 'Guest::cetak_nota/$1');
+// hutang
+$routes->get('hutang', 'Hutang::index');
+$routes->post('hutang/bayar', 'Hutang::bayar');
