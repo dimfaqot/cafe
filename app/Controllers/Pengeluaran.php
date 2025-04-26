@@ -109,4 +109,34 @@ class Pengeluaran extends BaseController
 
         sukses_js("Ok", $q);
     }
+
+    public function update()
+    {
+        $id = clear($this->request->getVar('id'));
+        $petugas = clear($this->request->getVar('petugas'));
+        $barang = clear($this->request->getVar('barang'));
+        $harga = rp_to_int(clear($this->request->getVar('harga')));
+        $qty = rp_to_int(clear($this->request->getVar('qty')));
+        $total = rp_to_int(clear($this->request->getVar('total')));
+
+        $db = db(menu()['tabel']);
+        $q = $db->where('id', $id)->get()->getRowArray();
+
+        if (!$q) {
+            gagal(base_url(menu()['tabel']), "Id not found...");
+        }
+
+        $q['petugas'] = $petugas;
+        $q['barang'] = $barang;
+        $q['harga'] = $harga;
+        $q['qty'] = $qty;
+        $q['total'] = $total;
+
+        $db->where('id', $id);
+        if ($db->update($q)) {
+            sukses(base_url(menu()['tabel']), "Sukses...");
+        } else {
+            gagal(base_url(menu()['tabel']), "Gagal...");
+        }
+    }
 }

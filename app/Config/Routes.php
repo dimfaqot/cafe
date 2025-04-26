@@ -42,15 +42,18 @@ $routes->post('/penjualan/no_nota', 'Penjualan::no_nota');
 $routes->post('/penjualan/cari_barang', 'Penjualan::cari_barang');
 $routes->post('/penjualan/transaksi', 'Penjualan::transaksi');
 $routes->post('/penjualan/user', 'Penjualan::user');
+$routes->post('/penjualan/update', 'Penjualan::update');
 
 // pengeluaran
 $routes->get('/pengeluaran', 'Pengeluaran::index');
-$routes->get('/inventaris', 'Pengeluaran::inventaris');
-$routes->post('/inventaris/add', 'Pengeluaran::add');
-$routes->post('/inventaris/update', 'Pengeluaran::update');
 $routes->post('/pengeluaran/cari_barang', 'Pengeluaran::cari_barang');
 $routes->post('/pengeluaran/transaksi', 'Pengeluaran::transaksi');
 $routes->post('/pengeluaran/user', 'Pengeluaran::user');
+$routes->post('/pengeluaran/update', 'Pengeluaran::update');
+
+$routes->get('/inventaris', 'Pengeluaran::inventaris');
+$routes->post('/inventaris/add', 'Pengeluaran::add');
+$routes->post('/inventaris/update', 'Pengeluaran::update');
 
 // guest
 $routes->get('guest/laporan/(:any)/(:num)', 'Guest::laporan/$1/$2');

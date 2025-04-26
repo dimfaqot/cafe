@@ -102,38 +102,61 @@
             }
         });
 
-        let html = `<div class="container">
-                        <div class="mb-3">
+        let html = `<div class="container">`;
+        <?php if (user()['role'] == "Advisor"): ?>
+            html += `<form  method="post" action="<?= base_url(menu()['controller']); ?>/update">
+            <input type="hidden" value="${val.id}" name="id">
+            <div class="body_user_id"></div>`;
+        <?php endif; ?>
+        html += `<div class="mb-3">
                             <label style="font-size: 12px;">No. Nota</label>
                             <input type="text" value="${val.no_nota}" class="form-control form-control-sm" readonly>
                         </div>
                         <div class="mb-3">
                             <label style="font-size: 12px;">Tgl</label>
                             <input type="text" value="${time_php_to_js(val.tgl)}" class="form-control form-control-sm" readonly>
-                        </div>
-                        <div class="mb-3">
+                        </div>`;
+        <?php if (user()['role'] == "Advisor"): ?>
+            html += `<div class= mb-3" style="position: relative;">
+                            <span class="text_main" style="font-size: small;">Pembeli</span>
+                            <input name="pembeli" type="text" class="mb-2 form-control update_nama_pembeli nama_pembeli" data-user_id="${val.user_id}" value="${val.pembeli}" placeholder="Nama pembeli">
+                            <div class="data_list_update_pembeli data_list"></div>
+                        </div>`;
+        <?php else: ?>
+            html += `<div class="mb-3">
                             <label style="font-size: 12px;">Pembeli</label>
                             <input type="text" value="${(val.pembeli==''?'-':val.pembeli)}" class="form-control form-control-sm" readonly>
-                        </div>
-                        <div class="mb-3">
+                        </div>`;
+        <?php endif; ?>
+
+        <?php if (user()['role'] == "Advisor"): ?>
+            html += `<div class= mb-3" style="position: relative;">
+                            <span class="text_main" style="font-size: small;">Barang</span>
+                            <input name="barang" type="text" class="mb-2 form-control update_barang cari_barang" value="${val.barang}" placeholder="Barang">
+                            <div class="data_list_update_barang data_list"></div>
+                        </div>`;
+        <?php else: ?>
+            html += `<div class="mb-3">
                             <label style="font-size: 12px;">Barang</label>
                             <input type="text" value="${val.barang}" class="form-control form-control-sm" readonly>
-                        </div>
-                        <div class="mb-3">
+                        </div>`;
+
+        <?php endif; ?>
+        html += `<div class="mb-3">
                             <label style="font-size: 12px;">Qty</label>
-                            <input type="text" value="${angka(val.qty)}" class="form-control form-control-sm" readonly>
+                            <input type="text" name="qty" value="${angka(val.qty)}" class="form-control angka update_qty form-control-sm" <?= (user()['role'] == "Advisor" ? "" : "readonly"); ?>>
                         </div>
                         <div class="mb-3">
                             <label style="font-size: 12px;">Harga</label>
-                            <input type="text" value="${angka(val.harga)}" class="form-control form-control-sm" readonly>
+                            <input type="text" name="harga" value="${angka(val.harga)}" class="form-control update_harga form-control-sm" readonly>
                         </div>
                         <div class="mb-3">
                             <label style="font-size: 12px;">Diskon</label>
-                            <input type="text" value="${angka(val.diskon)}" class="form-control form-control-sm" readonly>
+                            <input type="text" name="diskon" value="${angka(val.diskon)}" class="form-control angka update_diskon form-control-sm" <?= (user()['role'] == "Advisor" ? "" : "readonly"); ?>>
                         </div>
                         <div class="mb-3">
                             <label style="font-size: 12px;">Total</label>
-                            <input type="text" value="${angka(val.total)}" class="form-control form-control-sm" readonly>
+                            <input type="text" name="total" value="${angka(val.total)}" class="form-control update_total form-control-sm" readonly>
                         </div>
                         <div class="mb-3">
                             <label style="font-size: 12px;">Metode Bayar</label>
@@ -146,72 +169,16 @@
                         <div class="mb-3">
                             <label style="font-size: 12px;">Petugas</label>
                             <input type="text" value="${val.petugas}" class="form-control form-control-sm" readonly>
-                        </div>
-                    </div>`;
+                        </div>`;
+        <?php if (user()['role'] == "Advisor"): ?>
+            html += `  <div class="d-grid">
+                            <button type="submit" class="btn btn-sm link_secondary"><i class="fa-solid fa-floppy-disk"></i> Update</button>
+                        </div></form>`;
+        <?php endif; ?>
+        html += `</div>`;
 
         popupButton.html(html);
     })
-    // $(document).on("click", ".btn_lunas", function(e) {
-    //     e.preventDefault();
-    //     let no_nota = $(this).data("no_nota");
-
-    //     let val = [];
-    //     let total = 0;
-    //     data.forEach(e => {
-    //         if (e.no_nota == no_nota) {
-    //             total += parseInt(e.total);
-    //             val.push(e);
-    //         }
-    //     });
-    //     daftar_transaksi = val;
-    //     let html = "";
-
-    //     html += `
-    //             <div class="input-group input-group-sm mb-2">
-    //                 <span class="input-group-text bg_main border border_main">No. Nota</span>
-    //                 <input type="text" class="form-control bg_main border border_main text_main" value="${val[0].no_nota}">
-    //             </div>
-    //             <div class="input-group input-group-sm mb-3">
-    //                 <span class="input-group-text bg_main border border_main">Pembeli</span>
-    //                 <input type="text" class="form-control bg_main border border_main text_main" value="${val[0].pembeli}">
-    //             </div>
-    //              <div class="text-center mb-3">
-    //                     <span class="text_main" style="font-size: small;">Uang Pembayaran</span>
-    //                     <input type="text" class="mt-2 form-control uang_pembayaran text-center angka" value="${angka(total)}" placeholder="Uang pembayaran">
-    //             </div>
-    //             <table class="table table-sm table-dark table-bordered" style="font-size: 12px;">
-    //                         <thead>
-    //                             <tr>
-    //                                 <th text-center>#</th>
-    //                                 <th text-center>Barang</th>
-    //                                 <th text-center>Qty</th>
-    //                                 <th text-center>Diskon</th>
-    //                                 <th text-center>Harga</th>
-    //                             </tr>
-    //                         </thead>
-    //                         <tbody class="isi_transaksi">`;
-    //     html += isi_transaksi_template("lunas");
-    //     html += '</tbody>'
-    //     html += '</table>';
-
-
-    //     html += '</div>';
-
-
-    //     popupButton.html(html);
-
-    //     setTimeout(() => {
-    //         $('#fullscreen').on('shown.bs.modal', function() {
-    //             let input = $('.nama_pembeli');
-    //             input.focus();
-
-    //             // Pindahkan kursor ke akhir teks di input
-    //             let inputElement = input[0];
-    //             let length = inputElement.value.length;
-    //             inputElement.setSelectionRange(length, length);
-    //         });
-    //     }, 200);
-    // })
 
 
     $(document).on("click", ".transaksi", function(e) {
@@ -266,6 +233,7 @@
         let value = $(this).text();
         let colspan = $(this).data("colspan");
         let empty_cols = parseInt($(this).data("empty_cols"));
+        let order = ($(this).hasClass("update_barang") ? "update" : "add");
 
         $(".remove_all").remove();
 
@@ -273,25 +241,37 @@
             value
         }).then(res => {
             if (res.status == "200") {
-                $(".remove_all").remove();
-                let html = '';
+                if (order == "add") {
+                    $(".remove_all").remove();
+                    let html = '';
+                    for (let i = 0; i < empty_cols; i++) {
+                        html += '<td class="remove_all"></td>';
+                    }
+                    if (res.data.length == 0) {
+                        html += '<td class="remove_all" colspan="' + colspan + '"><i class="fa-solid fa-triangle-exclamation"></i> Data tidak ditemukan</td>';
+                    } else {
+                        html += '<td class="remove_all" colspan="' + colspan + '">';
+                        html += '<div class="border_main text_main search_list" style="position: absolute;background-color:<?= tema('link_main'); ?>">';
+                        res.data.forEach((e, i) => {
+                            html += '<div data-order="' + order + '" data-id="' + e.id + '" data-satuan="' + e.satuan + '" data-qty="' + e.qty + '" data-barang="' + e.barang + '" data-jual="' + e.harga + '" class="p-1 border-bottom border_main select_barang" style="cursor: pointer;">' + e.barang + ' || ' + angka(e.qty) + '</div>';
+                        })
+                        html += '</div>';
+                        html += '</td>';
 
-                for (let i = 0; i < empty_cols; i++) {
-                    html += '<td class="remove_all"></td>';
-                }
-                if (res.data.length == 0) {
-                    html += '<td class="remove_all" colspan="' + colspan + '"><i class="fa-solid fa-triangle-exclamation"></i> Data tidak ditemukan</td>';
+                    }
+                    $("#penjualan tr:last").after(html);
+
                 } else {
-                    html += '<td class="remove_all" colspan="' + colspan + '">';
-                    html += '<div class="border_main text_main search_list" style="position: absolute;background-color:<?= tema('link_main'); ?>">';
-                    res.data.forEach((e, i) => {
-                        html += '<div data-id="' + e.id + '" data-satuan="' + e.satuan + '" data-qty="' + e.qty + '" data-barang="' + e.barang + '" data-jual="' + e.harga + '" class="p-1 border-bottom border_main select_barang" style="cursor: pointer;">' + e.barang + ' || ' + angka(e.qty) + '</div>';
+                    let html = "";
+                    if (res.data.length == 0) {
+                        html += '<div>Data tidak ditemukan!.</div>';
+                    }
+                    res.data.forEach(e => {
+                        html += '<div data-order="' + order + '" data-qty="' + e.qty + '" data-harga="' + e.harga + '" data-barang="' + e.barang + '" class="select_barang">' + e.barang + '/' + e.qty + '</div>';
                     })
-                    html += '</div>';
-                    html += '</td>';
 
+                    $(".data_list_update_barang").html(html);
                 }
-                $("#penjualan tr:last").after(html);
 
             } else {
                 popup_confirm.message(res.status, res.message);
@@ -307,24 +287,37 @@
         let qty = parseInt($(this).data("qty"));
         let jual = parseInt($(this).data("jual"));
         let satuan = $(this).data("satuan");
+        let order = $(this).data("order");
 
-        // data_selected['id'] = id;
-        data_selected['id'] = id;
-        data_selected['barang'] = barang;
-        data_selected['qty'] = qty;
-        data_selected['jual'] = jual;
-        data_selected['satuan'] = satuan;
+        if (order == "add") {
+            if (qty <= 0) {
+                message('400', "Stok barang: " + angka(qty));
+                return;
+            }
+            // data_selected['id'] = id;
+            data_selected['id'] = id;
+            data_selected['barang'] = barang;
+            data_selected['qty'] = qty;
+            data_selected['jual'] = jual;
+            data_selected['satuan'] = satuan;
+            $("#penjualan tr:last td:first").text(barang);
+            $("#penjualan tr:last").find("td").eq(1).text(1);
+            $("#penjualan tr:last").find("td").eq(2).text(0);
+            $("#penjualan tr:last").find("td").eq(3).text(angka(data_selected.jual));
+            $(".search_list").remove();
 
-        if (qty <= 0) {
-            message('400', "Stok barang: " + angka(qty));
-            return;
+        } else {
+            $(".update_barang").val(barang);
+            let update_qty = parseInt(str_replace(".", "", $(".update_qty").val()));
+            let update_diskon = parseInt(str_replace(".", "", $(".update_diskon").val()));
+            let update_harga = parseInt($(this).data("harga"));
+
+            $(".update_harga").val(angka(update_harga));
+            $(".update_total").val(angka((update_harga * update_qty) - update_diskon));
+            $(".data_list_update_barang").html("");
         }
 
-        $("#penjualan tr:last td:first").text(barang);
-        $("#penjualan tr:last").find("td").eq(1).text(1);
-        $("#penjualan tr:last").find("td").eq(2).text(0);
-        $("#penjualan tr:last").find("td").eq(3).text(angka(data_selected.jual));
-        $(".search_list").remove();
+
 
 
     });
@@ -777,7 +770,7 @@
     $(document).on('keyup', '.nama_pembeli', function(e) {
         e.preventDefault();
         let val = $(this).val();
-        console.log(val);
+        let order = ($(this).hasClass("update_nama_pembeli") ? "update" : "add");
         post("penjualan/user", {
             val
         }).then(res => {
@@ -786,10 +779,13 @@
                 html += '<div>Data tidak ditemukan!.</div>';
             }
             res.data.forEach(e => {
-                html += '<div data-id="' + e.id + '" class="select_user">' + e.nama + '</div>';
+                html += '<div data-order="' + order + '" data-id="' + e.id + '" class="select_user">' + e.nama + '</div>';
             })
-
-            $(".data_list").html(html);
+            if (order == "add") {
+                $(".data_list").html(html);
+            } else {
+                $(".data_list_update_pembeli").html(html);
+            }
         })
     });
 
@@ -797,10 +793,17 @@
         e.preventDefault();
         let nama = $(this).text();
         let id = $(this).data("id");
+        let order = $(this).data("order");
 
-        $(".nama_pembeli").val(nama);
-        $(".btn_transaksi").attr("data-id", id);
-        $(".data_list").html("");
+        if (order == "add") {
+            $(".nama_pembeli").val(nama);
+            $(".btn_transaksi").attr("data-id", id);
+            $(".data_list").html("");
+        } else {
+            $(".update_nama_pembeli").val(nama);
+            $(".body_user_id").html('<input type="hidden" value="' + id + '" name="user_id">');
+            $(".data_list_update_pembeli").html("");
+        }
     });
 </script>
 

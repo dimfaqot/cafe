@@ -82,9 +82,7 @@ function menu($req = null)
         }
 
         if (count($res) == 0) {
-            if (user()) {
-                gagal(base_url('home'), "Kamu tidak diizinkan!.");
-            }
+            gagal(base_url('home'), "Kamu tidak diizinkan!.");
         }
     } else {
         if ($req == null) {
@@ -104,6 +102,7 @@ function menu($req = null)
             gagal(base_url(), "Kamu belum login!.");
         }
     }
+
     return $res;
 }
 

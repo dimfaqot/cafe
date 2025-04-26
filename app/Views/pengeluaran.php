@@ -58,8 +58,13 @@
         });
 
         const popupButton = new Modal("button");
-        let html = `<div class="container">
-                        <div class="mb-3">
+        let html = `<div class="container">`;
+
+        <?php if (user()['role'] == "Advisor"): ?>
+            html += `<form  method="post" action="<?= base_url(menu()['controller']); ?>/update">
+            <input type="hidden" value="${val.id}" name="id">`;
+        <?php endif; ?>
+        html += `<div class="mb-3">
                             <label style="font-size: 12px;">Kategori</label>
                             <input type="text" value="${val.kategori}" class="form-control form-control-sm" readonly>
                         </div>
@@ -70,32 +75,57 @@
                         <div class="mb-3">
                             <label style="font-size: 12px;">Penjual</label>
                             <input type="text" value="${(val.penjual==''?'-':val.penjual)}" class="form-control form-control-sm" readonly>
-                        </div>
-                        <div class="mb-3">
+                        </div>`;
+        <?php if (user()['role'] == "Advisor"): ?>
+            html += `<div class= mb-3" style="position: relative;">
+                            <span class="text_main" style="font-size: small;">Barang</span>
+                            <input name="barang" type="text" class="mb-2 form-control update_barang cari_barang" value="${val.barang}" placeholder="Barang">
+                            <div class="data_list_update_barang data_list"></div>
+                        </div>`;
+        <?php else: ?>
+            html += `<div class="mb-3">
                             <label style="font-size: 12px;">Barang</label>
                             <input type="text" value="${val.barang}" class="form-control form-control-sm" readonly>
-                        </div>
-                        <div class="mb-3">
+                        </div>`;
+
+        <?php endif; ?>
+
+        html += `<div class="mb-3">
                             <label style="font-size: 12px;">Qty</label>
-                            <input type="text" value="${angka(val.qty)}" class="form-control form-control-sm" readonly>
+                            <input type="text" name="qty" value="${angka(val.qty)}" class="form-control angka update_qty form-control-sm" <?= (user()['role'] == "Advisor" ? "" : "readonly"); ?>>
                         </div>
                         <div class="mb-3">
                             <label style="font-size: 12px;">Harga</label>
-                            <input type="text" value="${angka(val.harga)}" class="form-control form-control-sm" readonly>
+                            <input type="text" name="harga" value="${angka(val.harga)}" class="form-control update_harga form-control-sm" readonly>
                         </div>
                         <div class="mb-3">
                             <label style="font-size: 12px;">Diskon</label>
-                            <input type="text" value="${angka(val.diskon)}" class="form-control form-control-sm" readonly>
+                            <input type="text" name="diskon" value="${angka(val.diskon)}" class="form-control angka update_diskon form-control-sm" <?= (user()['role'] == "Advisor" ? "" : "readonly"); ?>>
                         </div>
                         <div class="mb-3">
                             <label style="font-size: 12px;">Total</label>
-                            <input type="text" value="${angka(val.total)}" class="form-control form-control-sm" readonly>
-                        </div>
-                        <div class="mb-3">
+                            <input type="text" name="total" value="${angka(val.total)}" class="form-control update_total form-control-sm" readonly>
+                        </div>`;
+
+        <?php if (user()['role'] == "Advisor"): ?>
+            html += `<div class= mb-3" style="position: relative;">
+                            <span class="text_main" style="font-size: small;">Petugas</span>
+                            <input name="petugas" type="text" class="mb-2 form-control update_nama_petugas nama_petugas" data-user_id="${val.user_id}" value="${val.petugas}" placeholder="Nama petugas">
+                            <div class="data_list_update_petugas data_list"></div>
+                        </div>`;
+        <?php else: ?>
+            html += `<div class="mb-3">
                             <label style="font-size: 12px;">Petugas</label>
-                            <input type="text" value="${val.petugas}" class="form-control form-control-sm" readonly>
-                        </div>
-                    </div>`;
+                            <input type="text" value="${(val.petugas==''?'-':val.petugas)}" class="form-control form-control-sm" readonly>
+                        </div>`;
+        <?php endif; ?>
+        <?php if (user()['role'] == "Advisor"): ?>
+            html += `  <div class="d-grid">
+                            <button type="submit" class="btn btn-sm link_secondary"><i class="fa-solid fa-floppy-disk"></i> Update</button>
+                        </div></form>`;
+        <?php endif; ?>
+        html += `</form>`;
+        html += `</div>`;
 
         popupButton.html(html);
     })
@@ -145,9 +175,11 @@
 
     $(document).on('keyup', '.cari_barang', function(e) {
         e.preventDefault();
+
         let value = $(this).text();
         let colspan = $(this).data("colspan");
         let empty_cols = parseInt($(this).data("empty_cols"));
+        let order = ($(this).hasClass("update_barang") ? "update" : "add");
 
         $(".remove_all").remove();
 
@@ -155,44 +187,69 @@
             value
         }).then(res => {
             if (res.status == "200") {
-                $(".remove_all").remove();
-                let html = '';
+                if (order == "add") {
+                    $(".remove_all").remove();
+                    let html = '';
+                    for (let i = 0; i < empty_cols; i++) {
+                        html += '<td class="remove_all"></td>';
+                    }
+                    if (res.data.length == 0) {
+                        html += '<td class="remove_all" colspan="' + colspan + '"><i class="fa-solid fa-triangle-exclamation"></i> Data tidak ditemukan</td>';
+                    } else {
+                        html += '<td class="remove_all" colspan="' + colspan + '">';
+                        html += '<div class="border_main text_main search_list" style="position: absolute;background-color:<?= tema('link_main'); ?>">';
+                        res.data.forEach((e, i) => {
+                            html += '<div data-order="' + order + '" data-id="' + e.id + '" data-satuan="' + e.satuan + '" data-qty="' + e.qty + '" data-barang="' + e.barang + '" data-jual="' + e.harga + '" class="p-1 border-bottom border_main select_barang" style="cursor: pointer;">' + e.barang + ' || ' + angka(e.qty) + '</div>';
+                        })
+                        html += '</div>';
+                        html += '</td>';
 
-                for (let i = 0; i < empty_cols; i++) {
-                    html += '<td class="remove_all"></td>';
-                }
-                if (res.data.length == 0) {
-                    html += '<td class="remove_all" colspan="' + colspan + '"><i class="fa-solid fa-triangle-exclamation"></i> Data tidak ditemukan</td>';
+                    }
+                    $("#penjualan tr:last").after(html);
+
                 } else {
-                    html += '<td class="remove_all" colspan="' + colspan + '">';
-                    html += '<div class="bborder_main text_main search_list" style="position: absolute;background-color:<?= tema('link_main'); ?>">';
-                    res.data.forEach((e, i) => {
-                        html += '<div data-id="' + e.id + '" data-satuan="' + e.satuan + '" data-qty="' + e.qty + '" data-barang="' + e.barang + '" data-jual="' + e.jual + '" class="p-1 border-bottom border-secondary select_barang" style="cursor: pointer;">' + e.barang + ' || ' + angka(e.qty) + '</div>';
+                    let html = "";
+                    if (res.data.length == 0) {
+                        html += '<div>Data tidak ditemukan!.</div>';
+                    }
+                    res.data.forEach(e => {
+                        html += '<div data-order="' + order + '" data-qty="' + e.qty + '" data-harga="' + e.harga + '" data-barang="' + e.barang + '" class="select_barang">' + e.barang + '/' + e.qty + '</div>';
                     })
-                    html += '</div>';
-                    html += '</td>';
 
+                    $(".data_list_update_barang").html(html);
                 }
-                $("#penjualan tr:last").after(html);
 
             } else {
                 popup_confirm.message(res.status, res.message);
             }
         })
-
-
     });
     $(document).on('click', '.select_barang', function(e) {
         e.preventDefault();
         let barang = $(this).data("barang");
         let id = $(this).data("id");
+        let order = $(this).data("order");
 
+        console.log(order);
         // data_selected['id'] = id;
-        data_selected['id'] = id;
+        if (order == "add") {
+            data_selected['id'] = id;
 
-        $("#penjualan tr:last td:first").text(barang);
-        $(".add_qty").text(1);
-        $(".search_list").remove();
+            $("#penjualan tr:last td:first").text(barang);
+            $(".add_qty").text(1);
+            $(".search_list").remove();
+        } else {
+            $(".update_barang").val(barang);
+            let update_qty = parseInt(str_replace(".", "", $(".update_qty").val()));
+            let update_diskon = parseInt(str_replace(".", "", $(".update_diskon").val()));
+            let update_harga = parseInt($(this).data("harga"));
+            $(".update_harga").val(angka(update_harga));
+            $(".update_total").val(angka((update_harga * update_qty) - update_diskon));
+            $(".data_list_update_barang").html("");
+        }
+
+
+
 
 
     });
@@ -548,8 +605,9 @@
 
     $(document).on('keyup', '.nama_petugas', function(e) {
         e.preventDefault();
-        let val = $(this).val();
 
+        let val = $(this).val();
+        let order = ($(this).hasClass("update_nama_petugas") ? "update" : "add");
         post("pengeluaran/user", {
             val
         }).then(res => {
@@ -558,10 +616,13 @@
                 html += '<div>Data tidak ditemukan!.</div>';
             }
             res.data.forEach(e => {
-                html += '<div data-id="' + e.id + '" class="select_user">' + e.nama + '</div>';
+                html += '<div data-order="' + order + '" data-id="' + e.id + '" class="select_user">' + e.nama + '</div>';
             })
-
-            $(".data_list").html(html);
+            if (order == "add") {
+                $(".data_list").html(html);
+            } else {
+                $(".data_list_update_petugas").html(html);
+            }
         })
     });
 
@@ -569,10 +630,16 @@
         e.preventDefault();
         let nama = $(this).text();
         let id = $(this).data("id");
+        let order = $(this).data("order");
 
-        $(".nama_petugas").val(nama);
-        $(".btn_transaksi").attr("data-id", id);
-        $(".data_list").html("");
+        if (order == "add") {
+            $(".nama_pembeli").val(nama);
+            $(".btn_transaksi").attr("data-id", id);
+            $(".data_list").html("");
+        } else {
+            $(".update_nama_petugas").val(nama);
+            $(".data_list_update_petugas").html("");
+        }
     });
 </script>
 <?= $this->endSection() ?>

@@ -6,6 +6,7 @@ class Penjualan extends BaseController
 {
     function __construct()
     {
+
         helper('functions');
         if (!session('id')) {
             gagal(base_url(), "Kamu belum login!.");
@@ -17,6 +18,7 @@ class Penjualan extends BaseController
 
     public function index(): string
     {
+
         $db = db(menu()['tabel']);
 
         $q = $db->orderBy('tgl', 'DESC')->get()->getResultArray();
@@ -27,6 +29,7 @@ class Penjualan extends BaseController
                 $data[] = $i;
             }
         }
+
         return view(menu()['controller'], ['judul' => menu()['menu'], 'data' => $data]);
     }
 
@@ -126,5 +129,36 @@ class Penjualan extends BaseController
         $q = $db->like('nama', $val, 'both')->orderBy('nama', 'ASC')->limit(10)->get()->getResultArray();
 
         sukses_js("Ok", $q);
+    }
+    public function update()
+    {
+        $id = clear($this->request->getVar('id'));
+        $user_id = clear($this->request->getVar('user_id'));
+        $pembeli = clear($this->request->getVar('pembeli'));
+        $barang = clear($this->request->getVar('barang'));
+        $harga = rp_to_int(clear($this->request->getVar('harga')));
+        $qty = rp_to_int(clear($this->request->getVar('qty')));
+        $total = rp_to_int(clear($this->request->getVar('total')));
+
+        $db = db(menu()['tabel']);
+        $q = $db->where('id', $id)->get()->getRowArray();
+
+        if (!$q) {
+            gagal(base_url(menu()['tabel']), "Id not found...");
+        }
+
+        $q['user_id'] = $user_id;
+        $q['pembeli'] = $pembeli;
+        $q['barang'] = $barang;
+        $q['harga'] = $harga;
+        $q['qty'] = $qty;
+        $q['total'] = $total;
+
+        $db->where('id', $id);
+        if ($db->update($q)) {
+            sukses(base_url(menu()['tabel']), "Sukses...");
+        } else {
+            gagal(base_url(menu()['tabel']), "Gagal...");
+        }
     }
 }
