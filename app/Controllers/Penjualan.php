@@ -24,9 +24,13 @@ class Penjualan extends BaseController
         $q = $db->orderBy('tgl', 'DESC')->get()->getResultArray();
         $data = [];
 
-        foreach ($q as $i) {
-            if (date('m', $i['tgl']) == date('m') && date('Y', $i['tgl']) == date('Y') && date('d', $i['tgl']) == date('d')) {
+        foreach ($q as $k => $i) {
+            if (user()['role'] == "Advisor" && $k < 200) {
                 $data[] = $i;
+            } else {
+                if (date('m', $i['tgl']) == date('m') && date('Y', $i['tgl']) == date('Y') && date('d', $i['tgl']) == date('d')) {
+                    $data[] = $i;
+                }
             }
         }
 

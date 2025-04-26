@@ -32,7 +32,11 @@
                     <td class="<?= ($i['kategori'] == "Belanja" ? "" : "bg-success bg-opacity-10"); ?>"><?= date('d/m/Y', $i['tgl']); ?></td>
                     <td class="<?= ($i['kategori'] == "Belanja" ? "" : "bg-success bg-opacity-10"); ?>"><?= $i['barang']; ?></td>
                     <td class="<?= ($i['kategori'] == "Belanja" ? "" : "bg-success bg-opacity-10"); ?> text-end"><?= angka($i['total']); ?></td>
-                    <td class="<?= ($i['kategori'] == "Belanja" ? "" : "bg-success bg-opacity-10"); ?>"><a data-id="<?= $i['id']; ?>" href="" class="text_main btn_detail"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
+                    <td class="<?= ($i['kategori'] == "Belanja" ? "" : "bg-success bg-opacity-10"); ?> text-center"><a data-id="<?= $i['id']; ?>" href="" class="text_main btn_detail"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        <?php if (user()['role'] == "Advisor"): ?>
+                            | <a data-id="<?= $i['id']; ?>" data-tabel="<?= menu()['tabel']; ?>" href="" class="text_main btn_confirm btn_confirm_<?= $i['id']; ?>"><i class="fa-solid fa-circle-xmark text-danger"></i></a>
+                        <?php endif; ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
@@ -641,5 +645,30 @@
             $(".data_list_update_petugas").html("");
         }
     });
+
+    $(document).on("click", ".btn_confirm", function(e) {
+        e.preventDefault();
+        let id = $(this).data("id");
+        popup_confirm.confirm("btn_confirm_" + id);
+    })
+    $(document).on("click", ".btn_delete", function(e) {
+        e.preventDefault();
+        let id = $(this).data("id");
+        let tabel = $(this).data("tabel");
+
+        post("home/delete", {
+            tabel,
+            id
+        }).then(res => {
+            if (res.status == "200") {
+                popup.message(res.status, res.message);
+                setTimeout(() => {
+                    location.reload();
+                }, 1200);
+            } else {
+                popup.message(res.status, res.message);
+            }
+        })
+    })
 </script>
 <?= $this->endSection() ?>
