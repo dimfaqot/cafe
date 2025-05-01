@@ -15,6 +15,8 @@ $routes->post('/home/delete', 'Home::delete');
 $routes->get('logout', 'Home::logout');
 $routes->post('/home/switch_tema', 'Home::switch_tema');
 $routes->post('/home/statistik', 'Home::statistik');
+$routes->post('/home/bisyaroh', 'Home::bisyaroh');
+$routes->post('/home/update_bisyaroh', 'Home::update_bisyaroh');
 
 // menu
 $routes->get('/menu', 'Menu::index');

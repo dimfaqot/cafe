@@ -21,7 +21,6 @@ class Home extends BaseController
 
     public function index(): string
     {
-
         return view('home', ['judul' => "Home"]);
     }
 
@@ -135,5 +134,111 @@ class Home extends BaseController
         }
 
         sukses_js('Connection success.', $detail_masuk, $detail_keluar);
+    }
+
+    public function bisyaroh()
+    {
+        $tahun = clear($this->request->getVar('tahun'));
+        $bulan = clear($this->request->getVar('bulan'));
+
+        $dbu = db('user');
+        $users = $dbu->where('role', 'Admin')->get()->getResultArray();
+
+        $res = [];
+        foreach ($users as $u) {
+            $db_masuk = db("penjualan");
+            $db_keluar = db("pengeluaran");
+
+
+            $masuk = $db_masuk->whereNotIn('ket', ['Hutang'])->where('petugas', $u['nama'])->orderBy('tgl', 'ASC')->get()->getResultArray();
+            $keluar = $db_keluar->where('petugas', $u['nama'])->orderBy('tgl', 'ASC')->get()->getResultArray();
+
+            $data = [];
+            $total = 0;
+
+
+            // mencari tahun pemasukan
+            foreach ($masuk as $i) {
+                if ($tahun == date('Y', $i['tgl']) && $bulan == date('m', $i['tgl'])) {
+                    $i['kategori'] = "Penjualan";
+                    $data[] = $i;
+                    $total++;
+                }
+            }
+
+            // mencari tahun pengeluaran
+            foreach ($keluar as $i) {
+                if ($tahun == date('Y', $i['tgl']) && $bulan == date('m', $i['tgl'])) {
+                    $i['kategori'] = "Pengeluaran";
+                    $data[] = $i;
+                    $total++;
+                }
+            }
+            $bisyaroh = options('Bisyaroh');
+
+            $u['bisyaroh'] = (int)$bisyaroh[0]['value'] * $total;
+            $u['data'] = $data;
+            $res[] = $u;
+        }
+
+        sukses_js("sukses", $res, (int)$bisyaroh[0]['value']);
+    }
+    public function update_bisyaroh()
+    {
+        $tahun = clear($this->request->getVar('tahun'));
+        $bulan = clear($this->request->getVar('bulan'));
+        $bisyaroh = rp_to_int(clear($this->request->getVar('bisyaroh')));
+
+        $dbo = db('options');
+        $q = $dbo->where('grup', 'Bisyaroh')->get()->getRowArray();
+        if (!$q) {
+            gagal_js('Id not found...');
+        }
+
+        $q['value'] = $bisyaroh;
+        $dbo->where('id', $q['id']);
+        $dbo->update($q);
+
+        $dbu = db('user');
+        $users = $dbu->where('role', 'Admin')->get()->getResultArray();
+
+        $res = [];
+        foreach ($users as $u) {
+            $db_masuk = db("penjualan");
+            $db_keluar = db("pengeluaran");
+
+
+            $masuk = $db_masuk->whereNotIn('ket', ['Hutang'])->where('petugas', $u['nama'])->orderBy('tgl', 'ASC')->get()->getResultArray();
+            $keluar = $db_keluar->where('petugas', $u['nama'])->orderBy('tgl', 'ASC')->get()->getResultArray();
+
+            $data = [];
+            $total = 0;
+
+
+            // mencari tahun pemasukan
+            foreach ($masuk as $i) {
+                if ($tahun == date('Y', $i['tgl']) && $bulan == date('m', $i['tgl'])) {
+                    $i['kategori'] = "Penjualan";
+                    $data[] = $i;
+                    $total++;
+                }
+            }
+
+            // mencari tahun pengeluaran
+            foreach ($keluar as $i) {
+                if ($tahun == date('Y', $i['tgl']) && $bulan == date('m', $i['tgl'])) {
+                    $i['kategori'] = "Pengeluaran";
+                    $data[] = $i;
+                    $total++;
+                }
+            }
+            $bisyaroh = options('Bisyaroh');
+
+            $u['bisyaroh'] = (int)$bisyaroh[0]['value'] * $total;
+            $u['data'] = $data;
+            $res[] = $u;
+        }
+
+        sukses_js("sukses", $res, (int)$bisyaroh[0]['value']);
     }
 }

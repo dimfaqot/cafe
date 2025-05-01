@@ -91,7 +91,7 @@
 
         let text = "_Assalamualaikum Wr. Wb._%0a";
         text += "Yth. *" + nama + '*%0a%0a';
-        text += 'Tagihan Anda di Hayu Playground:%0a%0a';
+        text += 'Tagihan Anda di Cafe Walisongo:%0a%0a';
         text += '*No. -- Tgl -- Barang -- Qty -- Harga*%0a'
 
         let x = 1;
