@@ -5,7 +5,7 @@
 <div class="text-center mb-3" style="margin-top: 80px;">WELCOME <b><?= strtoupper(user()['nama']); ?></b></div>
 <?php if (user()['role'] == "Advisor" || user()['role'] == "Root"): ?>
     <div class="d-flex gap-2 mb-2">
-        <a href="" style="font-size: x-small;" class="px-2 py-1 link_main border_main rounded">BISYAROH</a>
+        <a href="" style="font-size: x-small;" class="px-2 py-1 link_main border_main bisyaroh rounded">BISYAROH</a>
         <a href="" style="font-size: x-small;" class="px-2 koperasi py-1 link_secondary border_main rounded">KOPERASI</a>
     </div>
 <?php endif; ?>
