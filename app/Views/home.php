@@ -404,7 +404,7 @@
                 html += '<td>' + (i + 1) + '</td>';
                 html += '<td style="text-align:center">' + time_php_to_js(e.tgl) + '</td>';
                 html += '<td>' + e.pj + '</td>';
-                html += '<td class="update_koperasi" data-id="' + e.id + ' text-end" contenteditable="true">' + angka(e.jml) + '</td>';
+                html += '<td class="update_koperasi text-end" data-id="' + e.id + ' text-end" contenteditable="true">' + angka(e.jml) + '</td>';
                 html += '</tr>';
             })
 
