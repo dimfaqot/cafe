@@ -4,8 +4,9 @@
 
 <div class="text-center mb-3" style="margin-top: 80px;">WELCOME <b><?= strtoupper(user()['nama']); ?></b></div>
 <?php if (user()['role'] == "Advisor" || user()['role'] == "Root"): ?>
-    <div class="mb-2">
-        <a href="" style="font-size: x-small;" class="px-2 bisyaroh py-1 link_main border_main rounded">BISYAROH</a>
+    <div class="d-flex gap-2 mb-2">
+        <a href="" style="font-size: x-small;" class="px-2 py-1 link_main border_main rounded">BISYAROH</a>
+        <a href="" style="font-size: x-small;" class="px-2 koperasi py-1 link_secondary border_main rounded">KOPERASI</a>
     </div>
 <?php endif; ?>
 <div class="d-flex justify-content-between bg_secondary p-2" style="border-radius:10px 10px 0px 0px">
@@ -245,7 +246,7 @@
             html += '<td>' + (i + 1) + '</td>';
             html += '<td style="text-align:center">' + time_php_to_js(e.tgl) + '</td>';
             html += '<td>' + e.kategori + '</td>';
-            html += '<td class="text-end">' + e.barang + '</td>';
+            html += '<td>' + e.barang + '</td>';
             html += '</tr>';
         })
 
@@ -324,11 +325,127 @@
             tahun,
             bulan
         }).then(res => {
+            message(res.status, res.message);
             data_bisyaroh = res.data;
             $(".body_data_bisyaroh").html(bisyaroh());
         })
 
     })
+
+
+    $(document).on('click', '.koperasi', function(e) {
+        e.preventDefault();
+        let role = "<?= user()['role']; ?>";
+        post("home/koperasi", {
+            id: 0
+        }).then(res => {
+            let html = '<div class="container">';
+            if (role == "Root" || role == "Advisor") {
+                html += `<div class="input-group input-group-sm mb-2">
+                            <input type="text" class="form-control add_koperasi angka" value="" placeholder="Koperasi">
+                            <button class="btn btn-outline-secondary btn_add_koperasi" type="button">Simpan Koperasi</button>
+                        </div>`;
+            }
+            html += '<div class="total_koperasi"></div>';
+            html += '<table class="table table-dark table-striped table-bordered table-sm" style="font-size:10px">';
+            html += '<thead>';
+            html += '<tr>';
+            html += '<th style="text-align: center;" scope="row">#</th>';
+            html += '<th style="text-align: center;" scope="row">Tgl</th>';
+            html += '<th style="text-align: center;" scope="row">Pj</th>';
+            html += '<th style="text-align: center;" scope="row">Jumlah</th>';
+            html += '</tr>';
+            html += '</thead>';
+            html += '<tbody class="body_koperasi">';
+            let total = 0;
+            res.data.forEach((e, i) => {
+                total += parseInt(e.jml);
+                html += '<tr>';
+                html += '<td>' + (i + 1) + '</td>';
+                html += '<td style="text-align:center">' + time_php_to_js(e.tgl) + '</td>';
+                html += `<td>${e.pj}</td>`;
+                html += '<td class="text-end update_koperasi" data-id="' + e.id + '" contenteditable="true">' + angka(e.jml) + '</td>';
+                html += '</tr>';
+            })
+
+            html += '</tbody>';
+            html += '</table>';
+            html += '</div>';
+
+
+            popupButton.html(html);
+            $(".total_koperasi").text("TOTAL: " + angka(total));
+        })
+
+    })
+
+
+    $(document).on('blur', '.update_koperasi', function(e) {
+        e.preventDefault();
+        let role = "<?= user()['role']; ?>";
+        if (role !== "Root" && role !== "Advisor") {
+            message("400", "Not allowed...");
+            return;
+        }
+
+        let id = $(this).data("id");
+        let jml = $(this).text();
+
+        post("home/update_koperasi", {
+            id,
+            jml
+        }).then(res => {
+            message(res.status, res.message);
+            let html = '';
+            let total = 0;
+            res.data.forEach((e, i) => {
+                total += parseInt(e.jml);
+                html += '<tr>';
+                html += '<td>' + (i + 1) + '</td>';
+                html += '<td style="text-align:center">' + time_php_to_js(e.tgl) + '</td>';
+                html += '<td>' + e.pj + '</td>';
+                html += '<td class="update_koperasi" data-id="' + e.id + ' text-end" contenteditable="true">' + angka(e.jml) + '</td>';
+                html += '</tr>';
+            })
+
+            $(".body_koperasi").html(html);
+            $(".total_koperasi").text("TOTAL: " + angka(total));
+        })
+
+    })
+
+    $(document).on('click', '.btn_add_koperasi', function(e) {
+        e.preventDefault();
+        let role = "<?= user()['role']; ?>";
+        if (role !== "Root" && role !== "Advisor") {
+            message("400", "Not allowed...");
+            return;
+        }
+        let jml = $(".add_koperasi").val();
+
+        post("home/add_koperasi", {
+            jml
+        }).then(res => {
+            message(res.status, res.message);
+            let html = '';
+            let total = 0;
+            res.data.forEach((e, i) => {
+                total += parseInt(e.jml);
+                html += '<tr>';
+                html += '<td>' + (i + 1) + '</td>';
+                html += '<td style="text-align:center">' + time_php_to_js(e.tgl) + '</td>';
+                html += '<td>' + e.pj + '</td>';
+                html += '<td class="update_koperasi text-end" data-id="' + e.id + '" contenteditable="true">' + angka(e.jml) + '</td>';
+                html += '</tr>';
+            })
+
+            $(".body_koperasi").html(html);
+            $(".total_koperasi").text("TOTAL: " + angka(total));
+
+        })
+
+    })
+
 
     chart_html('<?= date('Y'); ?>');
 </script>

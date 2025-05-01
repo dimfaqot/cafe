@@ -17,6 +17,9 @@ $routes->post('/home/switch_tema', 'Home::switch_tema');
 $routes->post('/home/statistik', 'Home::statistik');
 $routes->post('/home/bisyaroh', 'Home::bisyaroh');
 $routes->post('/home/update_bisyaroh', 'Home::update_bisyaroh');
+$routes->post('/home/koperasi', 'Home::koperasi');
+$routes->post('/home/update_koperasi', 'Home::update_koperasi');
+$routes->post('/home/add_koperasi', 'Home::add_koperasi');
 
 // menu
 $routes->get('/menu', 'Menu::index');

@@ -241,4 +241,49 @@ class Home extends BaseController
 
         sukses_js("sukses", $res, (int)$bisyaroh[0]['value']);
     }
+    public function koperasi()
+    {
+        $db = db('koperasi');
+        $val = $db->orderBy('tgl', 'DESC')->get()->getResultArray();
+        sukses_js("Sukses", $val);
+    }
+    public function add_koperasi()
+    {
+
+        $jml = rp_to_int(clear($this->request->getVar('jml')));
+
+        $db = db('koperasi');
+
+        $data = [
+            'tgl' => time(),
+            'jml' => $jml,
+            'pj' => user()['nama']
+        ];
+
+        if ($db->insert($data)) {
+            $val = $db->orderBy('tgl', 'DESC')->get()->getResultArray();
+            sukses_js("Sukses", $val);
+        }
+        gagal_js('Update gagal...');
+    }
+    public function update_koperasi()
+    {
+
+        $jml = rp_to_int(clear($this->request->getVar('jml')));
+        $id = clear($this->request->getVar('id'));
+
+        $db = db('koperasi');
+        $q = $db->where('id', $id)->get()->getRowArray();
+        if (!$q) {
+            gagal_js("Id not found...");
+        }
+        $q['jml'] = $jml;
+
+        $db->where('id', $q['id']);
+        if ($db->update($q)) {
+            $val = $db->orderBy('tgl', 'DESC')->get()->getResultArray();
+            sukses_js("Sukses", $val);
+        }
+        gagal_js('Update gagal...');
+    }
 }
