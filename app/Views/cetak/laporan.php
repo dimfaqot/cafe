@@ -120,7 +120,7 @@
         </tr>
     </table>
     <pagebreak />
-    <h4 style="margin-top: 20px;">H. HUTANG</h4>
+    <h4 style="margin-top: 20px;">D. HUTANG</h4>
 
     <table style="margin-top: 10px;width:100%;">
         <tr>
@@ -130,7 +130,7 @@
 
         </tr>
         <?php $total_hutang = 0; ?>
-        <?php foreach ($hutang as $h): ?>
+        <?php foreach ($hutang as $k => $h): ?>
             <?php $total_hutang += (int)$h['total']; ?>
             <?php if ($h['total'] > 0): ?>
                 <tr>
