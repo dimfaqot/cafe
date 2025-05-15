@@ -127,9 +127,10 @@ class Home extends BaseController
                 $i['tanggal'] = date('d/m/Y', $i['tgl']);
                 if ($b['angka'] == date('m', $i['tgl'])) {
                     $temp[] = $i;
-                    $total +=  $i['harga'];
+                    $total +=  $i['total'];
                 }
             }
+
             $detail_keluar[] = ['bulan' => $b['satuan'], 'bln' => $b['bulan'], 'data' => $temp, 'total' => $total];
         }
 
