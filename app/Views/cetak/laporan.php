@@ -130,12 +130,12 @@
 
         </tr>
         <?php $total_hutang = 0; ?>
-        <?php foreach ($hutang as $n => $h): ?>
-            <?php $total_hutang += (int)$h['total']; ?>
+        <?php foreach ($hutang as $k => $i): ?>
+            <?php $total_hutang += (int)$i['total']; ?>
             <tr>
-                <td style="text-align:center;border: 1px solid grey;padding:4px"><?= ($n + 1); ?></td>
-                <td style="border: 1px solid grey;padding:4px"><?= $h['user']['nama']; ?></td>
-                <td style="text-align: right; border: 1px solid grey;padding:4px"><?= angka($h['total']); ?></td>
+                <td style="text-align:center;border: 1px solid grey;padding:4px"><?= ($k + 1); ?></td>
+                <td style="border: 1px solid grey;padding:4px"><?= $i['user']['nama']; ?></td>
+                <td style="text-align: right; border: 1px solid grey;padding:4px"><?= angka($i['total']); ?></td>
             </tr>
 
         <?php endforeach; ?>

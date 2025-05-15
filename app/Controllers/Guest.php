@@ -73,17 +73,17 @@ class Guest extends BaseController
         $dbu = db('user');
         $users = $dbu->orderBy('nama', 'ASC')->get()->getResultArray();
 
-        $db = db('penjualan');
+        $dbp = db('penjualan');
         $hutang = [];
         foreach ($users as $u) {
-            $q = $db->where('user_id', $u['id'])->where('ket', 'Hutang')->orderBy('tgl', 'ASC')->get()->getResultArray();
+            $q = $dbp->where('user_id', $u['id'])->where('ket', 'Hutang')->orderBy('tgl', 'ASC')->get()->getResultArray();
 
             $total = 0;
             foreach ($q as $i) {
                 $total += (int)$i['total'];
             }
             if ($total > 0) {
-                $hutang[$u['id']] = ['user' => $u, 'total' => $total];
+                $hutang[] = ['user' => $u, 'total' => $total];
             }
         }
 
