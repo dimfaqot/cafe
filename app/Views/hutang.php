@@ -22,7 +22,7 @@
         <?php foreach ($users as $k => $i): ?>
             <?php $total += (int)$data[$i['id']]['total']; ?>
             <tr class="detail_hutang" data-id="<?= $i['id']; ?>">
-                <th><?= $k + 1; ?></th>
+                <td class="text-center"><?= $k + 1; ?></td>
                 <td><?= $i['nama']; ?></td>
                 <td class="text-end"><?= angka($data[$i['id']]['total']); ?></td>
             </tr>
@@ -57,10 +57,10 @@
 
         val.data.forEach((e, i) => {
             html += `<tr>
-              <th>${(i+1)}</th>
+              <td class="text-center">${(i+1)}</td>
               <td class="text-center">${time_php_to_js(e.tgl)}</td>
               <td>${e.barang}</td>
-              <td class="text-end">${e.total}</td>
+              <td class="text-end">${angka(e.total)}</td>
           </tr>`;
 
         });
