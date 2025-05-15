@@ -132,13 +132,11 @@
         <?php $total_hutang = 0; ?>
         <?php foreach ($hutang as $k => $h): ?>
             <?php $total_hutang += (int)$h['total']; ?>
-            <?php if ($h['total'] > 0): ?>
-                <tr>
-                    <td style="text-align:center;border: 1px solid grey;padding:4px"><?= ($k + 1); ?></td>
-                    <td style="border: 1px solid grey;padding:4px"><?= $h['user']['nama']; ?></td>
-                    <td style="text-align: right; border: 1px solid grey;padding:4px"><?= angka($h['total']); ?></td>
-                </tr>
-            <?php endif; ?>
+            <tr>
+                <td style="text-align:center;border: 1px solid grey;padding:4px"><?= ($k + 1); ?></td>
+                <td style="border: 1px solid grey;padding:4px"><?= $h['user']['nama']; ?></td>
+                <td style="text-align: right; border: 1px solid grey;padding:4px"><?= angka($h['total']); ?></td>
+            </tr>
 
         <?php endforeach; ?>
         <tr>

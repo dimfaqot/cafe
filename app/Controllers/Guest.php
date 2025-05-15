@@ -82,7 +82,9 @@ class Guest extends BaseController
             foreach ($q as $i) {
                 $total += (int)$i['total'];
             }
-            $hutang[$u['id']] = ['user' => $u, 'total' => $total];
+            if ($total > 0) {
+                $hutang[$u['id']] = ['user' => $u, 'total' => $total];
+            }
         }
 
         $set = [
