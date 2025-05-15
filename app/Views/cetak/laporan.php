@@ -60,6 +60,7 @@
     <h3 style="text-align: center;"><?= $judul; ?></h3>
     <h4>A. RANGKUMAN</h4>
     <h5><?= angka($total_masuk) . ' - ' . angka($total_keluar) . '= ' . angka($total_masuk - $total_keluar); ?></h5>
+
     <h4>B. PEMASUKAN</h4>
     <table style="margin-top: 10px;width:100%;">
         <tr>
@@ -87,7 +88,7 @@
             <th style="text-align:right;border: 1px solid grey;padding:4px"><?= angka($total_masuk); ?></th>
         </tr>
     </table>
-
+    <pagebreak />
     <h4 style="margin-top: 20px;">C. PENGELUARAN</h4>
 
     <table style="margin-top: 10px;width:100%;">
@@ -116,6 +117,33 @@
         <tr>
             <th colspan="6" style="text-align:right;border: 1px solid grey;padding:4px">TOTAL</th>
             <th style="text-align:right;border: 1px solid grey;padding:4px"><?= angka($total_keluar); ?></th>
+        </tr>
+    </table>
+    <pagebreak />
+    <h4 style="margin-top: 20px;">H. HUTANG</h4>
+
+    <table style="margin-top: 10px;width:100%;">
+        <tr>
+            <th style="border: 1px solid grey;padding:2px; text-align:center">No.</th>
+            <th style="border: 1px solid grey;padding:2px">Nama</th>
+            <th style="border: 1px solid grey;padding:2px;text-align:center">Hutang</th>
+
+        </tr>
+        <?php $total_hutang = 0; ?>
+        <?php foreach ($hutang as $h): ?>
+            <?php $total_hutang += (int)$h['total']; ?>
+            <?php if ($h['total'] > 0): ?>
+                <tr>
+                    <td style="text-align:center;border: 1px solid grey;padding:4px"><?= ($k + 1); ?></td>
+                    <td style="border: 1px solid grey;padding:4px"><?= $h['user']['nama']; ?></td>
+                    <td style="text-align: right; border: 1px solid grey;padding:4px"><?= angka($h['total']); ?></td>
+                </tr>
+            <?php endif; ?>
+
+        <?php endforeach; ?>
+        <tr>
+            <th colspan="2" style="text-align:right;border: 1px solid grey;padding:4px">TOTAL</th>
+            <th style="text-align:right;border: 1px solid grey;padding:4px"><?= angka($total_hutang); ?></th>
         </tr>
     </table>
 

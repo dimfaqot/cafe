@@ -33,6 +33,8 @@ class Hutang extends BaseController
             }
             $data[$u['id']] = ['user' => $u, 'total' => $total, 'data' => $temp_data];
         }
+
+
         return view(menu()['controller'], ['judul' => menu()['menu'], 'users' => $users, 'data' => $data]);
     }
 

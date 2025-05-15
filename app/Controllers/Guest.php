@@ -70,6 +70,21 @@ class Guest extends BaseController
             }
         }
 
+        $dbu = db('user');
+        $users = $dbu->orderBy('nama', 'ASC')->get()->getResultArray();
+
+        $db = db('penjualan');
+        $hutang = [];
+        foreach ($users as $u) {
+            $q = $db->where('user_id', $u['id'])->where('ket', 'Hutang')->orderBy('tgl', 'ASC')->get()->getResultArray();
+
+            $total = 0;
+            foreach ($q as $i) {
+                $total += (int)$i['total'];
+            }
+            $hutang[$u['id']] = ['user' => $u, 'total' => $total];
+        }
+
         $set = [
             'mode' => 'utf-8',
             'format' => [210, 330],
@@ -85,7 +100,7 @@ class Guest extends BaseController
         $judul = "LAPORAN CAFE BULAN " . strtoupper($bulan) . " TAHUN " . $tahun;
         // Dapatkan konten HTML
         $logo = '<img width="90" src="logo.png" alt="KOP"/>';
-        $html = view('cetak/laporan', ['judul' => $judul, 'logo' => $logo, 'tahun' => $tahun, 'bulan' => $bulan, 'masuk' => $data_masuk, 'keluar' => $data_keluar, 'total_masuk' => $total_masuk, 'total_keluar' => $total_keluar]); // view('pdf_template') mengacu pada file view yang akan dirender menjadi PDF
+        $html = view('cetak/laporan', ['judul' => $judul, 'logo' => $logo, 'tahun' => $tahun, 'bulan' => $bulan, 'masuk' => $data_masuk, 'keluar' => $data_keluar, 'total_masuk' => $total_masuk, 'total_keluar' => $total_keluar, 'hutang' => $hutang]); // view('pdf_template') mengacu pada file view yang akan dirender menjadi PDF
 
         // Setel konten HTML ke mPDF
         $mpdf->WriteHTML($html);
