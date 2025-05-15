@@ -20,7 +20,7 @@
     <tbody class="tabel_search">
         <?php $total = 0; ?>
         <?php foreach ($users as $k => $i): ?>
-            <?php $total = (int)$data[$i['id']]['total']; ?>
+            <?php $total += (int)$data[$i['id']]['total']; ?>
             <tr class="detail_hutang" data-id="<?= $i['id']; ?>">
                 <th><?= $k + 1; ?></th>
                 <td><?= $i['nama']; ?></td>
