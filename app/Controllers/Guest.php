@@ -75,6 +75,7 @@ class Guest extends BaseController
 
         $dbp = db('penjualan');
         $hutang = [];
+        $total_hutang = 0;
         foreach ($users as $u) {
             $q = $dbp->where('user_id', $u['id'])->where('ket', 'Hutang')->orderBy('tgl', 'ASC')->get()->getResultArray();
 
@@ -83,6 +84,7 @@ class Guest extends BaseController
                 $total += (int)$i['total'];
             }
             if ($total > 0) {
+                $total_hutang += (int)$total;
                 $hutang[] = ['user' => $u, 'total' => $total];
             }
         }
@@ -102,7 +104,7 @@ class Guest extends BaseController
         $judul = "LAPORAN CAFE BULAN " . strtoupper($bulan) . " TAHUN " . $tahun;
         // Dapatkan konten HTML
         $logo = '<img width="90" src="logo.png" alt="KOP"/>';
-        $html = view('cetak/laporan', ['judul' => $judul, 'logo' => $logo, 'tahun' => $tahun, 'bulan' => $bulan, 'masuk' => $data_masuk, 'keluar' => $data_keluar, 'total_masuk' => $total_masuk, 'total_keluar' => $total_keluar, 'hutang' => $hutang]); // view('pdf_template') mengacu pada file view yang akan dirender menjadi PDF
+        $html = view('cetak/laporan', ['judul' => $judul, 'logo' => $logo, 'tahun' => $tahun, 'bulan' => $bulan, 'masuk' => $data_masuk, 'keluar' => $data_keluar, 'total_masuk' => $total_masuk, 'total_keluar' => $total_keluar, 'hutang' => $hutang, 'total_hutang' => $total_hutang]); // view('pdf_template') mengacu pada file view yang akan dirender menjadi PDF
 
         // Setel konten HTML ke mPDF
         $mpdf->WriteHTML($html);

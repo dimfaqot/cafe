@@ -60,6 +60,7 @@
     <h3 style="text-align: center;"><?= $judul; ?></h3>
     <h4>A. RANGKUMAN</h4>
     <h5><?= angka($total_masuk) . ' - ' . angka($total_keluar) . '= ' . angka($total_masuk - $total_keluar); ?></h5>
+    <h5>HUTANG: <?= angka($total_hutang); ?></h5>
 
     <h4>B. PEMASUKAN</h4>
     <table style="margin-top: 10px;width:100%;">
