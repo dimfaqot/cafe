@@ -43,7 +43,7 @@
         let html = '';
 
         html += '<div class="tabel_pendapatan">';
-        html += '<table class="table table-dark table-striped table-bordered table-sm" style="font-size:10px">';
+        html += '<table class="table table-dark table-bordered table-sm" style="font-size:10px">';
         html += '<thead>';
         html += '<tr>';
         html += '<th style="text-align: center;" scope="row">#</th>';
@@ -60,11 +60,11 @@
                 bulan = val.bln;
                 total = val.total;
                 val.data.forEach((e, i) => {
-                    html += '<tr>';
-                    html += '<td>' + (i + 1) + '</td>';
-                    html += '<td style="text-align:center">' + e.tanggal + '</td>';
-                    html += '<td>' + e.barang + '</td>';
-                    html += '<td class="text-end">' + angka(e.total) + '</td>';
+                    html += '<tr data-ket="' + e.ket + '">';
+                    html += '<td ' + (e.ket == "Hutang" ? 'class="bg-danger opacity-25"' : '') + '>' + (i + 1) + '</td>';
+                    html += '<td ' + (e.ket == "Hutang" ? 'class="bg-danger opacity-25"' : '') + ' style="text-align:center">' + e.tanggal + '</td>';
+                    html += '<td ' + (e.ket == "Hutang" ? 'class="bg-danger opacity-25"' : '') + '>' + e.barang + '</td>';
+                    html += '<td class="text-end ' + (e.ket == "Hutang" ? 'bg-danger opacity-25' : '') + '">' + angka(e.total) + '</td>';
                     html += '</tr>';
                 })
             }
