@@ -44,7 +44,7 @@ class Guest extends BaseController
         $db_keluar = db("pengeluaran");
 
 
-        $masuk = $db_masuk->orderBy('tgl', 'ASC')->orderBy('barang', 'ASC')->get()->getResultArray();
+        $masuk = $db_masuk->whereNotIn('ket', ['Hutang'])->orderBy('tgl', 'ASC')->orderBy('barang', 'ASC')->get()->getResultArray();
         $keluar = $db_keluar->orderBy('tgl', 'ASC')->orderBy('barang', 'ASC')->get()->getResultArray();
 
         $data_masuk = [];
