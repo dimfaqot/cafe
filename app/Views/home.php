@@ -105,7 +105,6 @@
                 let total_m = 0;
 
                 res.data.forEach((val, idx) => {
-                    total_m += val.total;
 
                     val.data.forEach(t => {
                         if (t.metode == "Tap") {

@@ -41,6 +41,10 @@
                                 <label class="form-check-label">Inv</label>
                             </div>
                             <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="kategori" type="radio" value="Service">
+                                <label class="form-check-label">Service</label>
+                            </div>
+                            <div class="form-check form-check-inline">
                                 <input class="form-check-input" name="kategori" type="radio" value="Donasi">
                                 <label class="form-check-label">Donasi</label>
                             </div>
@@ -137,6 +141,10 @@
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" name="kategori" type="radio" value="Inv" ${(val.kategori=="Inv"?"checked":"")}>
                                 <label class="form-check-label">Inv</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="kategori" type="radio" value="Service" ${(val.kategori=="Service"?"checked":"")}>
+                                <label class="form-check-label">Service</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" name="kategori" type="radio" value="Donasi" ${(val.kategori=="Donasi"?"checked":"")}>

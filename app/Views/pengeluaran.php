@@ -492,6 +492,10 @@
                                 <label class="form-check-label">Inv</label>
                             </div>
                             <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="jenis_pengeluaran" type="radio" value="Service">
+                                <label class="form-check-label">Service</label>
+                            </div>
+                            <div class="form-check form-check-inline">
                                 <input class="form-check-input" name="jenis_pengeluaran" type="radio" value="Donasi">
                                 <label class="form-check-label">Donasi</label>
                             </div>
@@ -637,7 +641,7 @@
         let order = $(this).data("order");
 
         if (order == "add") {
-            $(".nama_pembeli").val(nama);
+            $(".nama_petugas").val(nama);
             $(".btn_transaksi").attr("data-id", id);
             $(".data_list").html("");
         } else {
