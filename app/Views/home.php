@@ -104,13 +104,13 @@
 
                 let total_m = 0;
 
-                res.data.forEach((val, idx) => {
-
-                    val.data.forEach(t => {
-                        if (t.metode == "Tap") {
-                            total_tap += parseInt(t[jml]);
-                        }
-                    });
+                res.data.forEach((e, idx) => {
+                    total_m += e.total;
+                    // val.data.forEach(t => {
+                    //     if (t.metode == "Tap") {
+                    //         total_tap += parseInt(t[jml]);
+                    //     }
+                    // });
                 })
 
                 // total pengeluaran
