@@ -859,16 +859,17 @@
         let no_nota = $(this).data("no_nota");
         let is_new_item = false;
         datas.forEach(e => {
-            if (e.ket == undefined) {
+            if (e.ket === undefined) {
                 is_new_item = true;
             }
         })
 
         if (is_new_item == false) {
             message("400", "No new item");
+            return;
         }
 
-        post("transaksi/add_item", {
+        post("transaksi/btn_add_item", {
             no_nota,
             datas
         }).then(res => {

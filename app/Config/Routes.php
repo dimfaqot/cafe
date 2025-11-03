@@ -72,4 +72,4 @@ $routes->post('/hutang/bayar', 'Hutang::bayar');
 $routes->get('/guest/laporan/(:any)/(:num)/(:num)', 'Guest::laporan/$1/$2/$3');
 $routes->get('/guest/nota/(:any)', 'Guest::nota/$1');
 $routes->post('/guest/login', 'Guest::login');
-$routes->get('/guest/logout', 'Guest::logout');
+$routes->get('/logout', 'Guest::logout');

@@ -396,6 +396,7 @@ class Transaksi extends BaseController
             ->getResultArray();
 
         $total = array_sum(array_column($res, 'biaya'));
+
         $db->transComplete();
 
         return $db->transStatus()

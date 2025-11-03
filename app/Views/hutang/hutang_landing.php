@@ -85,7 +85,7 @@
 
                 let text = "_Assalamualaikum Wr. Wb._%0a";
                 text += "Yth. *" + res.data2.nama + '*%0a%0a';
-                text += 'Tagihan Anda di 9CLEAN:%0a%0a';
+                text += 'Tagihan Anda di <?= profile()['nama']; ?>:%0a%0a';
                 text += '*No. -- Tgl -- Barang -- Harga -- Qty -- Total -- Diskon -- Biaya*%0a'
 
                 let x = 1;
