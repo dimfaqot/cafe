@@ -106,13 +106,11 @@
             </thead>
             <tbody>
                 <?php $total = 0;
-                $diskon = 0;
-                $biaya = 0; ?>
+                $diskon = 0; ?>
                 <?php foreach ($data as $i): ?>
                     <?php
                     $total += (int)$i['total'];
                     $diskon += (int)$i['diskon'];
-                    $biaya += (int)$i['biaya'];
                     ?>
                     <tr>
                         <td><?= $i['barang']; ?></td>
@@ -137,7 +135,7 @@
                 </tr>
                 <tr>
                     <td colspan="3">Total</td>
-                    <td class="total"><?= angka($biaya); ?></td>
+                    <td class="total"><?= angka($total - $diskon); ?></td>
                 </tr>
                 <tr>
                     <td colspan="3">Uang</td>
@@ -145,7 +143,7 @@
                 </tr>
                 <tr>
                     <td colspan="3">Kembalian</td>
-                    <td class="total"><?= angka($data[0]['uang'] - $total); ?></td>
+                    <td class="total"><?= angka($data[0]['uang'] - ($total - $diskon)); ?></td>
                 </tr>
             </tfoot>
         </table>

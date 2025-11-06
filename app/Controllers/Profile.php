@@ -34,7 +34,8 @@ class Profile extends BaseController
             'pendiri'       => upper_first(clear($this->request->getVar('pendiri'))),
             'tgl_berdiri'       => strtotime($this->request->getVar('tgl_berdiri')),
             'sub_unit'       => upper_first(clear($this->request->getVar('sub_unit'))),
-            'modal_asal'       => upper_first(clear($this->request->getVar('modal_asal')))
+            'modal_asal'       => upper_first(clear($this->request->getVar('modal_asal'))),
+            'cp'       => upper_first(clear($this->request->getVar('cp')))
         ];
 
         // Simpan data

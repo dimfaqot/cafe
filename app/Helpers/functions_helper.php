@@ -289,22 +289,15 @@ function profile()
 
 function uang_modal()
 {
-    // Query total biaya
-    $total = db('pengeluaran')
-        ->selectSum('biaya')
-        ->where('jenis', "Modal")
-        ->get()
-        ->getRowArray();
-
     // Query data detail
-    $data = db('pengeluaran')
+    $data = db('pengeluaran')->select('*')
         ->select('*')
         ->where('jenis', "Modal")
         ->orderBy('tgl', 'DESC')
         ->get()
         ->getResultArray();
-
-    $res = ['total' => $total['biaya'], 'data' => $data];
+    $total = array_sum(array_column($data, 'biaya'));
+    $res = ['total' => $total, 'data' => $data];
 
     return $res;
 }

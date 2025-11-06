@@ -31,6 +31,10 @@
         <input type="text" class="form-control bg-dark text-light border border-warning" name="modal_asal" value="<?= $data['modal_asal']; ?>" placeholder="Asal Modal">
         <label class="text-secondary">Asal Modal</label>
     </div>
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control bg-dark text-light border border-warning" name="cp" value="<?= $data['cp']; ?>" placeholder="Contact Person">
+        <label class="text-secondary">Contact Person</label>
+    </div>
     <input type="hidden" name="id" value="<?= $data['id']; ?>">
 
     <div class="d-grid">

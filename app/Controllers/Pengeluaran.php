@@ -14,10 +14,14 @@ class Pengeluaran extends BaseController
     }
     public function index(): string
     {
+        $jenises = [];
+        foreach (options('Kantin') as $i) {
+            $jenises[] = $i['value'];
+        }
 
         $db = db('pengeluaran');
         $db->select('*');
-        $db->whereNotIn('jenis', ["Inv", "Modal", "Donasi", "Service"]);
+        $db->whereIn('jenis', $jenises);
         $data = $db->orderBy('tgl', 'DESC')
             ->where("MONTH(FROM_UNIXTIME(tgl))", date('n'))
             ->where("YEAR(FROM_UNIXTIME(tgl))", date('Y'))

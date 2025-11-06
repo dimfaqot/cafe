@@ -78,26 +78,19 @@ class Inv extends BaseController
             $tahun = clear($this->request->getVar('tahun'));
             $bulan = clear($this->request->getVar('bulan'));
 
-            $total = db('pengeluaran')
-                ->selectSum('biaya')
-                ->where('jenis', 'Inv')
-                ->where("MONTH(FROM_UNIXTIME(tgl))", $bulan)
-                ->where("YEAR(FROM_UNIXTIME(tgl))", $tahun)
-                ->get()
-                ->getRowArray();
-
             // Query data detail
-            $data = db('pengeluaran')
+            $data = db('pengeluaran')->select('*')
                 ->select('*')
-                ->where('jenis', 'Inv')
+                ->where('jenis', "Inv")
                 ->where("MONTH(FROM_UNIXTIME(tgl))", $bulan)
                 ->where("YEAR(FROM_UNIXTIME(tgl))", $tahun)
                 ->orderBy('tgl', 'DESC')
                 ->get()
                 ->getResultArray();
+            $total = array_sum(array_column($data, 'biaya'));
 
 
-            sukses_js("Ok", $data, $total['biaya']);
+            sukses_js("Ok", $data, $total);
         } else {
             gagal_js("Ggaal");
         }
