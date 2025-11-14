@@ -422,6 +422,7 @@
     });
     $(document).on('click', '.btn_bayar', function(e) {
         e.preventDefault();
+
         let order = $(this).data('order');
         let uang = $(".uang_pembayaran").val();
         uang = (uang == "" ? "0" : uang);

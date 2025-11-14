@@ -104,13 +104,7 @@ class Inv extends BaseController
 
         $db = db('pengeluaran');
         $db->select('*');
-        if ($jenis == "All") {
-            $jenises = [];
-            foreach (options('Inv') as $i) {
-                $jenises[] = $i['value'];
-            }
-            $db->whereIn('jenis', $jenises);
-        } else {
+        if ($jenis !== "All") {
             $db->where('jenis', $jenis);
         }
         $data = $db->orderBy('tgl', 'DESC')
@@ -118,6 +112,7 @@ class Inv extends BaseController
             ->where("YEAR(FROM_UNIXTIME(tgl))", $tahun)
             ->get()
             ->getResultArray();
+
         $total = array_sum(array_column($data, 'biaya'));
 
 

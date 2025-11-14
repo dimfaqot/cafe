@@ -8,16 +8,20 @@
         <label class="text-secondary">Nama</label>
     </div>
     <div class="form-floating mb-2">
+        <input type="date" class="form-control bg-dark text-light border border-warning" name="tgl_berdiri" value="<?= date('Y-m-d', $data['tgl_berdiri']); ?>">
+        <label class="text-secondary">Tgl. Berdiri</label>
+    </div>
+    <div class="form-floating mb-2">
         <input type="text" class="form-control bg-dark text-light border border-warning" name="pendiri" value="<?= $data['pendiri']; ?>" placeholder="Pendiri">
         <label class="text-secondary">Pendiri</label>
     </div>
     <div class="form-floating mb-2">
-        <input type="text" class="form-control bg-dark text-light border border-warning" name="manager" value="<?= $data['manager']; ?>" placeholder="Manager">
-        <label class="text-secondary">Manager</label>
+        <input type="text" class="form-control bg-dark text-light border border-warning" name="cp" value="<?= $data['cp']; ?>" placeholder="Contact Person">
+        <label class="text-secondary">Contact Person</label>
     </div>
     <div class="form-floating mb-2">
-        <input type="date" class="form-control bg-dark text-light border border-warning" name="tgl_berdiri" value="<?= date('Y-m-d', $data['tgl_berdiri']); ?>">
-        <label class="text-secondary">Tgl. Berdiri</label>
+        <input type="text" class="form-control bg-dark text-light border border-warning" name="manager" value="<?= $data['manager']; ?>" placeholder="Manager">
+        <label class="text-secondary">Manager</label>
     </div>
     <div class="form-floating mb-2">
         <input type="text" class="form-control bg-dark text-light border border-warning" name="sub_unit" value="<?= $data['sub_unit']; ?>" placeholder="Sub Unit">
@@ -30,10 +34,6 @@
     <div class="form-floating mb-3">
         <input type="text" class="form-control bg-dark text-light border border-warning" name="modal_asal" value="<?= $data['modal_asal']; ?>" placeholder="Asal Modal">
         <label class="text-secondary">Asal Modal</label>
-    </div>
-    <div class="form-floating mb-3">
-        <input type="text" class="form-control bg-dark text-light border border-warning" name="cp" value="<?= $data['cp']; ?>" placeholder="Contact Person">
-        <label class="text-secondary">Contact Person</label>
     </div>
     <input type="hidden" name="id" value="<?= $data['id']; ?>">
 
@@ -48,6 +48,7 @@
         let data = <?= json_encode(uang_modal()['data']); ?>;
         let html = build_html("DETAIL MODAL", "offcanvas");
         html += `<input class="form-control form-control-sm bg-dark text-light cari mb-2" placeholder="Cari">
+        <div style="max-height:600px;overflow-y:auto">
                     <table class="table table-sm table-dark" style="font-size:12px">
                         <thead>
                             <tr>
@@ -69,11 +70,10 @@
                             </tr>`;
         })
         html += `</tbody>
-                    </table>`;
+                    </table></div>`;
         $(".body_canvas").html(html);
         canvas.show();
     });
-
     $(document).on('keyup', '.cari', function(e) {
         e.preventDefault();
         let value = $(this).val().toLowerCase();

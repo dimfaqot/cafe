@@ -30,6 +30,7 @@ class Profile extends BaseController
         }
         $q = [
             'nama'       => upper_first(clear($this->request->getVar('nama'))),
+            'cp'       => upper_first(clear($this->request->getVar('cp'))),
             'manager'       => upper_first(clear($this->request->getVar('manager'))),
             'pendiri'       => upper_first(clear($this->request->getVar('pendiri'))),
             'tgl_berdiri'       => strtotime($this->request->getVar('tgl_berdiri')),
